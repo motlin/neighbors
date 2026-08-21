@@ -12,6 +12,6 @@
 # A Pages project has no `main`, no `[assets]` block and no compatibility flags: those are Worker
 # settings, and wrangler rejects them once `pages_build_output_dir` is set.
 
-name = "neighbors"
+name = "neighbors-game"
 compatibility_date = "2025-01-12"
 pages_build_output_dir = "dist"

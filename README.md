@@ -4,7 +4,7 @@ A logic puzzle for one player. You are dealt a bag of numbered buildings and an 
 them one at a time, each touching what is already down, until every building's number agrees with
 the neighbours around it.
 
-Play it at [neighbors.pages.dev](https://neighbors.pages.dev).
+Play it at [neighbors-game.pages.dev](https://neighbors-game.pages.dev).
 
 ## The rules
 
@@ -86,8 +86,13 @@ just deploy      # build, then wrangler pages deploy
 ```
 
 CI does the same on a push to `main`, and puts every pull request on
-`https://pr-<number>.neighbors.pages.dev`. Both need `CLOUDFLARE_API_TOKEN` and
+`https://pr-<number>.neighbors-game.pages.dev`. Both need `CLOUDFLARE_API_TOKEN` and
 `CLOUDFLARE_ACCOUNT_ID` in the repository secrets.
+
+The repository is `neighbors` but the Pages project is `neighbors-game`, which is why the URLs say
+so. A `pages.dev` subdomain is claimed across the whole of Cloudflare rather than per account, and
+`neighbors.pages.dev` is somebody else's site. There is no rename for a Pages project — the
+subdomain is fixed when the project is created — so the name has to be right the first time.
 
 ## Where it came from
 

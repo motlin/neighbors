@@ -1,7 +1,7 @@
 # Publishes a pull request preview to Cloudflare Pages and puts its URL on the pull request.
 #
 # A Pages preview is just a deployment made under a branch name that is not the production one, so
-# `--branch pr-N` is the whole mechanism: it is served at https://pr-N.neighbors.pages.dev and it
+# `--branch pr-N` is the whole mechanism: it is served at https://pr-N.neighbors-game.pages.dev and it
 # is replaced, not accumulated, each time the pull request is pushed to.
 #
 # There is no cleanup workflow to go with this. A Pages preview holds no state -- no Durable
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: preview-${{ github.event.pull_request.number }}
-      url: https://pr-${{ github.event.pull_request.number }}.neighbors.pages.dev
+      url: https://pr-${{ github.event.pull_request.number }}.neighbors-game.pages.dev
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -91,7 +91,7 @@ jobs:
           script: |
             const number = context.issue.number;
             // A Pages deployment made under a branch name is served at <branch>.<project>.pages.dev.
-            const url = `https://pr-${number}.neighbors.pages.dev`;
+            const url = `https://pr-${number}.neighbors-game.pages.dev`;
             const body = `Preview: ${url}`;
 
             const comments = await github.paginate(github.rest.issues.listComments, {

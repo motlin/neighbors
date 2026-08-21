@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://neighbors.pages.dev
+      url: https://neighbors-game.pages.dev
     steps:
       # wrangler.toml comes from the repo; dist/ is what the build job just made.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
