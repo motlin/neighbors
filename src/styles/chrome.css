@@ -1,0 +1,83 @@
+.controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 7px;
+}
+button.act {
+	font: inherit;
+	font-size: 11px;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	font-weight: 600;
+	background: transparent;
+	color: var(--ink);
+	border: 1.5px solid var(--ink);
+	padding: 7px 11px;
+	cursor: pointer;
+	transition:
+		background 0.12s ease,
+		color 0.12s ease;
+}
+button.act:hover:not(:disabled) {
+	background: var(--ink);
+	color: var(--paper);
+}
+button.act:focus-visible {
+	outline: 3px solid var(--ink);
+	outline-offset: 2px;
+}
+button.act:disabled {
+	opacity: 0.3;
+	cursor: default;
+}
+
+.readout {
+	font-size: 11px;
+	color: var(--soft);
+	margin-top: 10px;
+	line-height: 1.6;
+}
+.readout b {
+	color: var(--ink);
+}
+.readout .bad {
+	color: var(--dead);
+	font-weight: 600;
+}
+
+.win {
+	position: absolute;
+	inset: 0;
+	background: rgba(10, 30, 51, 0.965);
+	border: 1.5px solid var(--ink);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	text-align: center;
+	padding: 20px;
+	z-index: 6;
+}
+.win h3 {
+	font-family: "Archivo Black", sans-serif;
+	font-size: clamp(22px, 5vw, 34px);
+	margin: 0;
+	text-transform: uppercase;
+	line-height: 0.9;
+}
+.win p {
+	margin: 0;
+	font-size: 12px;
+	color: var(--soft);
+	max-width: 32ch;
+}
+.hide {
+	display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation: none !important;
+		transition: none !important;
+	}
+}

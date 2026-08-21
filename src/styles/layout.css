@@ -1,0 +1,81 @@
+header {
+	border-bottom: 1.5px solid var(--ink);
+	padding-bottom: 10px;
+	margin-bottom: var(--gap);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: 10px;
+}
+h1 {
+	font-family: "Archivo Black", system-ui, sans-serif;
+	font-size: clamp(28px, 7vw, 52px);
+	line-height: 0.85;
+	letter-spacing: -0.02em;
+	margin: 0;
+	text-transform: uppercase;
+}
+.rule-line {
+	font-size: 11px;
+	letter-spacing: 0.05em;
+	color: var(--soft);
+	margin-top: 7px;
+	max-width: 46ch;
+}
+.plate {
+	text-align: right;
+	font-size: 10px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--soft);
+}
+.plate b {
+	display: block;
+	font-family: "Archivo Black", sans-serif;
+	font-size: 22px;
+	color: var(--ink);
+	letter-spacing: 0;
+}
+
+main {
+	display: grid;
+	grid-template-columns: minmax(0, 1.4fr) minmax(212px, 0.8fr);
+	gap: var(--gap);
+	align-items: start;
+}
+@media (max-width: 720px) {
+	main {
+		grid-template-columns: 1fr;
+	}
+}
+
+.board-wrap {
+	position: relative;
+}
+/* the board hugs its own tracks and the pane centres it. 'safe' means that
+   once the board outgrows the pane it falls back to starting at the left
+   edge instead of centring, which is what keeps a growing grid from sliding
+   sideways and what makes scrollLeft compensation possible at all.
+   the stable gutter stops an appearing scrollbar from nudging it too. */
+.scroller {
+	overflow: auto;
+	padding: 2px;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	justify-content: safe center;
+	scrollbar-gutter: stable;
+}
+.board {
+	display: grid;
+	gap: 4px;
+	width: max-content;
+	margin: 0;
+	flex: 0 0 auto;
+}
+.board.paintable {
+	touch-action: none;
+	-webkit-user-select: none;
+	user-select: none;
+}

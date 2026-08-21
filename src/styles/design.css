@@ -1,0 +1,170 @@
+/* what-it-is picker */
+.kpad {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 4px;
+	margin-bottom: 8px;
+}
+.kc {
+	font: inherit;
+	font-size: 11px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	font-weight: 600;
+	padding: 8px 6px;
+	cursor: pointer;
+	border: 1.5px solid rgba(226, 240, 251, 0.35);
+	background: transparent;
+	color: var(--ink);
+	transition:
+		background 0.12s ease,
+		color 0.12s ease;
+}
+.kc:hover:not(.no) {
+	background: rgba(226, 240, 251, 0.12);
+}
+.kc:focus-visible {
+	outline: 3px solid var(--ink);
+	outline-offset: 2px;
+}
+.kc.on {
+	background: var(--ink);
+	color: var(--paper);
+	border-color: var(--ink);
+}
+.kc.no {
+	opacity: 0.32;
+	cursor: not-allowed;
+}
+.rngrow {
+	text-align: center;
+	margin: 9px 0 5px;
+}
+.rngval {
+	font-family: "Archivo Black", sans-serif;
+	font-size: 24px;
+	line-height: 1;
+}
+.rng {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 3px;
+	align-items: center;
+}
+.rc {
+	font: inherit;
+	font-size: 15px;
+	font-weight: 600;
+	padding: 6px 0;
+	cursor: pointer;
+	border: 1.5px solid rgba(226, 240, 251, 0.35);
+	background: transparent;
+	color: var(--ink);
+	transition: background 0.12s ease;
+}
+.rc:hover:not(:disabled) {
+	background: rgba(226, 240, 251, 0.12);
+}
+.rc:focus-visible {
+	outline: 3px solid var(--ink);
+	outline-offset: 2px;
+}
+.rc:disabled {
+	opacity: 0.25;
+	cursor: default;
+}
+.rlab {
+	font-size: 9px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--soft);
+	text-align: center;
+}
+
+/* the cell that must stay empty */
+.nogo {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	--xw: 2px;
+	width: calc(var(--fs)*0.86);
+	height: calc(var(--fs)*0.86);
+	transform: translate(-50%, -50%);
+	color: var(--dead);
+}
+.cell.open.no {
+	border-color: rgba(240, 86, 74, 0.5);
+}
+.cell.open.no:hover {
+	background: rgba(240, 86, 74, 0.14);
+}
+.cell.void.no {
+	border-color: rgba(240, 86, 74, 0.28);
+	border-style: dashed;
+}
+.cell.cube.onno .nogo {
+	color: var(--on-dead);
+	opacity: 0.75;
+	--xw: 2.5px;
+}
+.board.tiny .nogo {
+	--xw: 1.5px;
+}
+
+.xpad {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 4px;
+	margin-bottom: 8px;
+}
+.xc {
+	aspect-ratio: 1;
+	font: inherit;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	border: 1.5px solid rgba(226, 240, 251, 0.35);
+	background: transparent;
+	color: var(--ink);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition:
+		background 0.12s ease,
+		border-color 0.12s ease;
+}
+.xc:hover:not(:disabled):not(.mid) {
+	background: rgba(226, 240, 251, 0.12);
+}
+.xc:focus-visible {
+	outline: 3px solid var(--ink);
+	outline-offset: 2px;
+}
+.xc.on {
+	background: var(--dead);
+	color: var(--on-dead);
+	border-color: var(--dead);
+}
+.xc.taken {
+	opacity: 0.3;
+	cursor: default;
+	color: var(--soft);
+}
+.xc.mid {
+	border: 0;
+	font-family: "Archivo Black", sans-serif;
+	font-size: 19px;
+	cursor: default;
+}
+.xc .xg.pad {
+	width: 15px;
+	height: 15px;
+	--xw: 2.5px;
+}
+.xc .dot {
+	width: 8px;
+	height: 8px;
+	background: currentColor;
+	opacity: 0.55;
+	display: block;
+}

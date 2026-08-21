@@ -1,0 +1,17 @@
+# Cloudflare Pages, not a Worker.
+#
+# Neighbors is one player and holds no shared state: the puzzle, the design and the history all
+# live in the tab. Nothing here needs a server, a Durable Object or a binding, so the whole
+# deployable is the static build in dist/ and Pages is the smaller of the two products that can
+# serve it. `pages_build_output_dir` is the one line that makes this a Pages project rather than a
+# Worker; with it, `wrangler pages deploy` reads dist/ and uploads it.
+#
+#   just build          writes dist/
+#   just deploy         uploads dist/ to the production Pages deployment
+#
+# A Pages project has no `main`, no `[assets]` block and no compatibility flags: those are Worker
+# settings, and wrangler rejects them once `pages_build_output_dir` is set.
+
+name = "neighbors"
+compatibility_date = "2025-01-12"
+pages_build_output_dir = "dist"

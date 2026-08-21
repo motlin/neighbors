@@ -1,0 +1,49 @@
+:root {
+	--paper: #0a1e33;
+	--cell: #15395c;
+	--ink: #e2f0fb;
+	--soft: #84acca;
+	--line: rgba(226, 240, 251, 0.085);
+	--met: #31d1dd;
+	--on-met: #052134;
+	--dead: #f0564a;
+	--power: #e9b93c;
+	--on-power: #241a06;
+	--on-dead: #25070a;
+	--gap: clamp(10px, 2.4vw, 18px);
+	--fs: 24px;
+}
+* {
+	box-sizing: border-box;
+}
+html,
+body {
+	margin: 0;
+}
+body {
+	background: var(--paper);
+	color: var(--ink);
+	font-family: "IBM Plex Mono", ui-monospace, monospace;
+	font-size: 14px;
+	line-height: 1.45;
+	padding: var(--gap);
+	min-height: 100vh;
+	background-image:
+		repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 28px),
+		repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 28px);
+}
+.sheet {
+	max-width: 960px;
+	margin: 0 auto;
+	background: transparent;
+	border: 1.5px solid var(--ink);
+	padding: clamp(14px, 3vw, 26px);
+}
+.codebox::placeholder {
+	color: var(--soft);
+	opacity: 0.7;
+}
+::selection {
+	background: var(--met);
+	color: var(--on-met);
+}

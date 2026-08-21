@@ -1,0 +1,16 @@
+/*
+ * The stylesheet came off the Claude artifact in one block. It is split here by what each rule
+ * dresses, and imported in the original order, because the cascade in it is load-bearing: several
+ * selectors are stated twice at the same specificity and the later one is meant to win.
+ * `.tile` sets `--fs` in pieces.css after panels.css has sized it, and marks.css repaints
+ * `.cell.cube.plant.met` over the `.met` fill board.css gave it. Reorder these imports and the
+ * board changes colour.
+ */
+@import "./tokens.css";
+@import "./layout.css";
+@import "./board.css";
+@import "./panels.css";
+@import "./pieces.css";
+@import "./marks.css";
+@import "./design.css";
+@import "./chrome.css";

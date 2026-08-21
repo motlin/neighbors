@@ -1,0 +1,95 @@
+.cell.cube.sum::before {
+	content: "";
+	position: absolute;
+	inset: 13%;
+	border: 2px solid currentColor;
+	opacity: 0.55;
+	pointer-events: none;
+}
+.cell .num.two {
+	font-size: calc(var(--fs)*0.72);
+}
+.cell .num.three {
+	font-size: calc(var(--fs)*0.5);
+	letter-spacing: -0.02em;
+}
+.cell .num.four {
+	font-size: calc(var(--fs)*0.38);
+	letter-spacing: -0.03em;
+}
+.tile {
+	font-size: 21px;
+}
+.tile.rangey {
+	font-size: 14px;
+}
+.tile.sum::before {
+	content: "";
+	position: absolute;
+	inset: 4px;
+	border: 1.5px solid currentColor;
+	opacity: 0.5;
+}
+.baglabel {
+	flex-basis: 100%;
+	font-size: 9px;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--soft);
+	margin: 4px 0 1px;
+}
+.chk {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	font-size: 11px;
+	color: var(--soft);
+	margin: 0 0 9px;
+	cursor: pointer;
+}
+.chk input {
+	accent-color: var(--met);
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+}
+.modehint.warn {
+	color: var(--dead);
+}
+.clock {
+	font-size: 15px;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.02em;
+	color: var(--soft);
+	min-width: 62px;
+	text-align: right;
+}
+.clock.live {
+	color: var(--ink);
+}
+.clock.done {
+	color: var(--met);
+}
+.wintime {
+	font-family: "Archivo Black", sans-serif;
+	font-size: clamp(26px, 6vw, 40px);
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+}
+.wintime .pb,
+.wintime .pbq {
+	display: block;
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	margin-top: 6px;
+}
+.wintime .pb {
+	color: var(--met);
+}
+.wintime .pbq {
+	color: var(--soft);
+}

@@ -1,0 +1,107 @@
+.cell {
+	position: relative;
+	padding: 0;
+	font: inherit;
+	background: transparent;
+	color: var(--ink);
+	border: 1.5px solid transparent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition:
+		background 0.12s ease,
+		transform 0.1s ease;
+}
+.cell.void {
+	cursor: default;
+}
+.cell.open {
+	cursor: pointer;
+	border-style: dashed;
+	border-color: rgba(226, 240, 251, 0.34);
+}
+.cell.open:hover {
+	background: rgba(226, 240, 251, 0.1);
+}
+.cell.open:focus-visible {
+	outline: 3px solid var(--ink);
+	outline-offset: 2px;
+	z-index: 4;
+}
+.cell.open .adj {
+	font-size: calc(var(--fs)*0.46);
+	color: var(--soft);
+	opacity: 0.5;
+}
+
+.cell.cube {
+	border-color: var(--ink);
+	background: var(--cell);
+	cursor: default;
+}
+.cell .num {
+	font-family: "Archivo Black", sans-serif;
+	font-size: var(--fs);
+	line-height: 1;
+}
+.cell.cube {
+	flex-direction: column;
+	gap: 0;
+}
+.board.tiny .xm {
+	width: calc(var(--fs)*0.42);
+	height: calc(var(--fs)*0.42);
+	--xw: 1.5px;
+}
+.cell.cube .xm {
+	opacity: 0.6;
+}
+.tile .xm {
+	opacity: 0.95;
+}
+.tile {
+	--fs: 21px;
+}
+.cell.cube.met {
+	background: var(--met);
+	color: var(--on-met);
+	border-color: var(--met);
+}
+.cell.cube.dead {
+	background: var(--dead);
+	color: var(--on-dead);
+	border-color: var(--dead);
+}
+.cell.cube.dead::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(0, 0, 0, 0.24) 6px 9px);
+}
+.cell.cube.short {
+	box-shadow: inset 0 0 0 2px rgba(226, 240, 251, 0.22);
+}
+.cell.cube.erasable {
+	cursor: pointer;
+}
+.cell.cube.erasable:hover {
+	transform: scale(0.9);
+	box-shadow: inset 0 0 0 3px var(--dead);
+}
+.cell.cube.erasable:focus-visible {
+	outline: 3px solid var(--dead);
+	outline-offset: 2px;
+	z-index: 4;
+}
+.cell.just {
+	animation: pop 0.18s ease-out;
+}
+@keyframes pop {
+	from {
+		transform: scale(0.84);
+	}
+	to {
+		transform: scale(1);
+	}
+}
