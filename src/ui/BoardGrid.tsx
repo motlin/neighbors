@@ -50,6 +50,8 @@ export function BoardGrid({
 	const style = {
 		gridTemplateColumns: `repeat(${cols}, ${size}px)`,
 		gridAutoRows: `${size}px`,
+		// The board rules itself in cell-sized steps, so it has to be told what a cell came out at.
+		"--cs": `${size}px`,
 		"--fs": `${Math.round(size * 0.46)}px`,
 	} as CSSProperties;
 

@@ -67,12 +67,21 @@ main {
 	justify-content: safe center;
 	scrollbar-gutter: stable;
 }
+/* the cells sit flush so their edges join into unbroken rules. the lines are drawn once by the
+   board rather than by each cell's own border, which is what keeps an inside line the same
+   weight as an outside one instead of two borders doubling up. the right and bottom edges close
+   the last row and column, which no repeat reaches. */
 .board {
 	display: grid;
-	gap: 4px;
+	gap: 0;
 	width: max-content;
 	margin: 0;
 	flex: 0 0 auto;
+	background-image:
+		repeating-linear-gradient(to right, var(--grid) 0 1px, transparent 1px var(--cs)),
+		repeating-linear-gradient(to bottom, var(--grid) 0 1px, transparent 1px var(--cs));
+	border-right: 1px solid var(--grid);
+	border-bottom: 1px solid var(--grid);
 }
 .board.paintable {
 	touch-action: none;
