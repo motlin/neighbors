@@ -42,8 +42,15 @@ describe("neighbourSum", () => {
 		expect(neighbourSum(b, 0, 0)).toBe(5);
 	});
 
-	it("counts a range, a blank and a plant as zero", () => {
+	// A range shows no number of its own, so it feeds the sum the count it is standing on. The
+	// 2 to 4 here touches the sum, the blank and the plant, so it feeds three.
+	it("adds a range in at its own neighbour count", () => {
 		const b = board({"0,0": "s9", "1,0": "n2~4", "0,1": "b0", "1,1": "p3"});
+		expect(neighbourSum(b, 0, 0)).toBe(3);
+	});
+
+	it("counts a blank, a plant and another sum as zero", () => {
+		const b = board({"0,0": "s9", "0,1": "b0", "1,1": "p3", "1,0": "s4"});
 		expect(neighbourSum(b, 0, 0)).toBe(0);
 	});
 });
@@ -214,5 +221,23 @@ describe("statusOf with a sum still reachable", () => {
 		const b = board({[key(0, 0)]: "s9", "1,0": "n2"});
 		expect(status(b, 0, 0, {n7: 1})).toBe("short");
 		expect(status(b, 0, 0, {n1: 1})).toBe("starved");
+	});
+
+	// The sum has every side but its right one closed, so nothing new can ever touch it. The
+	// 1 to 4 beside it stands on one neighbour and so feeds it one, but two pieces from the bag
+	// can still land beside that range and grow what it feeds to three.
+	it("waits for a range beside it to grow instead of calling the sum starved", () => {
+		const b = board({"0,0": `s3.${255 - (1 << 4)}`, "1,0": "n1~4"});
+		expect(status(b, 0, 0, {n1: 2})).toBe("short");
+	});
+
+	it("still starves the sum when the range beside it cannot grow that far", () => {
+		const b = board({"0,0": `s8.${255 - (1 << 4)}`, "1,0": "n1~4"});
+		expect(status(b, 0, 0, {n1: 2})).toBe("starved");
+	});
+
+	it("calls the sum met once the range beside it stands on the right count", () => {
+		const b = board({"0,0": "s3", "1,0": "n1~4", "2,0": "b0", "2,1": "b0"});
+		expect(status(b, 0, 0, {})).toBe("met");
 	});
 });

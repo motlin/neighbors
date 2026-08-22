@@ -53,11 +53,13 @@ export const high = (p: Piece): number => p.hi || p.v;
 export const counts = (k: Kind): boolean => k === "n" || k === "e";
 
 /**
- * What this piece feeds a sum building next to it. A sum adds up the numbers touching it, so a
- * neighbour only feeds it if it shows one definite number: a range, a blank, a plant and another
- * sum all feed zero.
+ * What this piece feeds a sum building next to it, given how many neighbours it is standing on
+ * itself. A sum adds up the numbers touching it, so only the kinds that count feed it anything: a
+ * blank, a plant and another sum all feed zero. A plain building feeds its own number, and a
+ * range -- which shows no number of its own -- feeds the count it has landed on, so a 2 to 4 with
+ * three neighbours feeds three.
  */
-export const contrib = (p: Piece): number => (counts(p.k) && !p.hi ? p.v : 0);
+export const contrib = (p: Piece, count: number): number => (counts(p.k) ? (p.hi ? count : p.v) : 0);
 
 export function describePiece(p: Piece): string {
 	if (p.k === "p") return `Power plant ${p.v}`;

@@ -16,7 +16,7 @@ That one rule is the whole game. The rest are things a building can be:
 | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
 | **Plain**         | That many buildings touching it.                                                                                     |
 | **Sum**           | The numbers touching it to add up to its own. A ring is drawn around its number.                                     |
-| **Range** (`2-4`) | Any count inside the span. Having no single number, it feeds a sum as zero.                                          |
+| **Range** (`2-4`) | Any count inside the span. It feeds a sum the count it lands on, so a 2-4 on three feeds three.                      |
 | **Blank**         | Nothing at all. Happy anywhere.                                                                                      |
 | **Powered** (⚡)  | Its number of neighbours, _and_ a working power plant next door.                                                     |
 | **Power plant**   | To carry every building touching it, up to its number. Other plants don't count — and touching one breaks them both. |

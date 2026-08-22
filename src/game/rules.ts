@@ -7,7 +7,7 @@
  */
 
 import {around, key, xy} from "./geometry.js";
-import {contrib, high, low, unpid} from "./piece.js";
+import {contrib, counts, high, low, unpid} from "./piece.js";
 import type {Bag, Board, Key, Piece, Status} from "./types.js";
 
 export function neighbourCount(b: Board, x: number, y: number): number {
@@ -20,7 +20,7 @@ export function neighbourSum(b: Board, x: number, y: number): number {
 	let t = 0;
 	for (const [a, c] of around(x, y)) {
 		const q = b.get(key(a, c));
-		if (q) t += contrib(q);
+		if (q) t += contrib(q, neighbourCount(b, a, c));
 	}
 	return t;
 }
@@ -146,7 +146,8 @@ export function remainingOf(bag: Bag): Remaining {
 	for (const id in bag) {
 		const p = unpid(id);
 		for (let i = 0; i < bag[id]!; i++) {
-			contribs.push(contrib(p));
+			// A range in the bag has no count yet, so credit it with the best one it could land on.
+			contribs.push(contrib(p, high(p)));
 			n++;
 			if (p.k === "p") plants++;
 		}
@@ -155,6 +156,22 @@ export function remainingOf(bag: Bag): Remaining {
 	const pre = [0];
 	for (let i = 0; i < contribs.length; i++) pre.push(pre[i]! + contribs[i]!);
 	return {n, pre, plants};
+}
+
+/**
+ * The most the ranges already touching this sum could still add to it. A range feeds a sum the
+ * count it is standing on, so a piece landing beside one raises what the sum has even when that
+ * piece never touches the sum itself.
+ */
+function rangeGrowth(b: Board, x: number, y: number, rem: Remaining): number {
+	let g = 0;
+	for (const [a, c] of around(x, y)) {
+		const q = b.get(key(a, c));
+		if (!q?.hi || !counts(q.k)) continue;
+		const have = neighbourCount(b, a, c);
+		g += Math.max(0, Math.min(high(q), have + Math.min(openAround(b, a, c, q), rem.n)) - have);
+	}
+	return g;
 }
 
 /**
@@ -178,7 +195,7 @@ export function statusOf(b: Board, x: number, y: number, rem: Remaining, pw: Pow
 	if (have > high(p)) return "over";
 	const open = openAround(b, x, y, p);
 	const room = Math.min(open, rem.n);
-	const maxAdd = p.k === "s" ? rem.pre[room]! : room;
+	const maxAdd = p.k === "s" ? rem.pre[room]! + rangeGrowth(b, x, y, rem) : room;
 	if (have + maxAdd < low(p)) return "starved";
 	if (p.k === "e" && !pw.powered.has(k)) {
 		// Only a plant arriving can fix this, and one can only arrive if a side is still open and
