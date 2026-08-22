@@ -86,8 +86,10 @@
 .cell.cube.erasable {
 	cursor: pointer;
 }
+/* the mark has to stay inside the cell's own box. shrinking the cell on hover pulled it out from
+   under the pointer, which dropped the hover, which grew it back under the pointer again: a piece
+   held still near an edge flashed red ten times a second. */
 .cell.cube.erasable:hover {
-	transform: scale(0.9);
 	box-shadow: inset 0 0 0 3px var(--dead);
 }
 .cell.cube.erasable:focus-visible {
