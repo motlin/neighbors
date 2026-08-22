@@ -15,13 +15,14 @@
 .cell.void {
 	cursor: default;
 }
+/* the board's own ruling draws every cell edge now, so a dashed outline here would only double
+   up against the neighbouring cell's. a placeable cell is lit instead of ringed. */
 .cell.open {
 	cursor: pointer;
-	border-style: dashed;
-	border-color: rgba(226, 240, 251, 0.34);
+	background: rgba(226, 240, 251, 0.06);
 }
 .cell.open:hover {
-	background: rgba(226, 240, 251, 0.1);
+	background: rgba(226, 240, 251, 0.16);
 }
 .cell.open:focus-visible {
 	outline: 3px solid var(--ink);
