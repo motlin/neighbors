@@ -106,11 +106,9 @@ export function labelShape(
 	const kindOf = (k: Key): Kind => kinds.get(k) ?? "n";
 	const rangeOf = (k: Key) => ranges.get(k) ?? null;
 	const count = (x: number, y: number) => around(x, y).filter(([a, b]) => set.has(key(a, b))).length;
-	// A ranged neighbour has no single number, so it feeds a sum as zero.
-	const valOf = (x: number, y: number) => {
-		const k = key(x, y);
-		return counts(kindOf(k)) && !rangeOf(k) ? count(x, y) : 0;
-	};
+	// A building's number is its count, and a range feeds a sum the count it stands on either way,
+	// so what a neighbour feeds a sum is its count whenever it is a kind that counts at all.
+	const valOf = (x: number, y: number) => (counts(kindOf(key(x, y))) ? count(x, y) : 0);
 	const out = new Map<Key, Piece>();
 	for (const k of set) {
 		const [x, y] = xy(k);

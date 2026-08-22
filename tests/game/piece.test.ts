@@ -44,18 +44,23 @@ describe("low and high", () => {
 });
 
 describe("contrib", () => {
-	it("feeds a sum with a counting building's number", () => {
-		expect(contrib(unpid("n4"))).toBe(4);
-		expect(contrib(unpid("e2"))).toBe(2);
+	it("feeds a sum with a counting building's own number, whatever it is touching", () => {
+		expect(contrib(unpid("n4"), 1)).toBe(4);
+		expect(contrib(unpid("e2"), 7)).toBe(2);
 	});
 
-	// A sum adds up the numbers touching it, so a neighbour only feeds it if it has one definite
-	// number. A range, a blank and a plant have no single number, so all three feed it zero.
-	it("feeds a sum zero from anything without one definite number", () => {
-		expect(contrib(unpid("n2~5"))).toBe(0);
-		expect(contrib(unpid("b0"))).toBe(0);
-		expect(contrib(unpid("p3"))).toBe(0);
-		expect(contrib(unpid("s6"))).toBe(0);
+	// A range shows no number of its own, so what it feeds a sum is the count it is standing on:
+	// a 2 to 4 with three neighbours feeds three.
+	it("feeds a sum a range's neighbour count", () => {
+		expect(contrib(unpid("n2~4"), 3)).toBe(3);
+		expect(contrib(unpid("e1~8"), 0)).toBe(0);
+	});
+
+	// A blank, a plant and another sum have no count to give, so all three feed it zero.
+	it("feeds a sum zero from the kinds that do not count neighbours", () => {
+		expect(contrib(unpid("b0"), 3)).toBe(0);
+		expect(contrib(unpid("p3"), 3)).toBe(0);
+		expect(contrib(unpid("s6"), 3)).toBe(0);
 	});
 });
 

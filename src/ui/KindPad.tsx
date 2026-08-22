@@ -110,7 +110,7 @@ export function KindPad({state, onKind, onRange, onRefuse}: KindPadProps) {
 					</div>
 					<div className="dstat">
 						{piece.hi
-							? `Any count from ${piece.v} to ${piece.hi} will do. A range feeds a sum building as zero.`
+							? `Any count from ${piece.v} to ${piece.hi} will do. A range feeds a sum building the count it lands on.`
 							: "Widen it to accept a span of numbers instead of one."}
 					</div>
 				</>

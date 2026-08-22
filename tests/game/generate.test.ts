@@ -40,6 +40,17 @@ describe("labelShape", () => {
 		expect(labels.get("1,0")).toEqual({k: "s", v: 2, hi: 0, m: 0});
 	});
 
+	// A range has no number of its own, so what it feeds the sum is the count it stands on: the
+	// 0,0 cell touches 1,0 alone, so it feeds one however wide its range ends up.
+	it("gives a sum a ranged neighbour's count", () => {
+		const set = new Set<Key>(["0,0", "1,0", "2,0"]);
+		const kinds = new Map<Key, Kind>([["1,0", "s"]]);
+		const ranges = new Map<Key, [number, number]>([["0,0", [1, 1]]]);
+		const labels = labelShape(set, kinds, new Map(), ranges);
+		expect(labels.get("0,0")).toEqual({k: "n", v: 1, hi: 2, m: 0});
+		expect(labels.get("1,0")).toEqual({k: "s", v: 2, hi: 0, m: 0});
+	});
+
 	it("gives a plant the number of buildings it has to carry", () => {
 		const set = new Set<Key>(["0,0", "1,0", "2,0"]);
 		const kinds = new Map<Key, Kind>([["1,0", "p"]]);
