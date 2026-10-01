@@ -12,6 +12,7 @@
 # A Pages project has no `main`, no `[assets]` block and no compatibility flags: those are Worker
 # settings, and wrangler rejects them once `pages_build_output_dir` is set.
 
+# Serves https://neighbors-game.pages.dev and the custom domain https://neighbors.motlin.com.
 name = "neighbors-game"
 compatibility_date = "2025-01-12"
 pages_build_output_dir = "dist"

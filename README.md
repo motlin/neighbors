@@ -4,7 +4,8 @@ A logic puzzle for one player. You are dealt a bag of numbered buildings and an 
 them one at a time, each touching what is already down, until every building's number agrees with
 the neighbours around it.
 
-Play it at [neighbors-game.pages.dev](https://neighbors-game.pages.dev).
+Play it at [neighbors.motlin.com](https://neighbors.motlin.com/) (or the Cloudflare Pages URL,
+[neighbors-game.pages.dev](https://neighbors-game.pages.dev)).
 
 ## The rules
 
