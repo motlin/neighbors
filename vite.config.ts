@@ -9,6 +9,8 @@ export default defineConfig({
 		useTabs: true,
 		tabWidth: 4,
 		printWidth: 120,
+		proseWrap: "never",
+		embeddedLanguageFormatting: "off",
 		bracketSpacing: false,
 		trailingComma: "all",
 		arrowParens: "always",
@@ -20,10 +22,17 @@ export default defineConfig({
 					tabWidth: 2,
 				},
 			},
+			{
+				files: ["**/*.md"],
+				options: {
+					printWidth: 320,
+				},
+			},
 		],
 	},
 	run: {
 		tasks: {
+			// Add dependsOn here for code generation that type-aware lint needs.
 			check: {
 				command: "vp check",
 			},
@@ -33,9 +42,6 @@ export default defineConfig({
 				output: [],
 			},
 		},
-	},
-	staged: {
-		"*": "vp check --fix",
 	},
 	lint: {
 		plugins: [],
