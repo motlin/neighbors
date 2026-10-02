@@ -2,6 +2,8 @@ import {defineConfig} from "vite-plus";
 import {resolve} from "node:path";
 import react from "@vitejs/plugin-react";
 
+process.title = "neighbors";
+
 export default defineConfig({
 	fmt: {
 		semi: true,
