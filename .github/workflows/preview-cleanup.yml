@@ -8,6 +8,10 @@
 #
 # Pull requests that never deployed a preview (forks, Dependabot) have no environment; the 404 for
 # those is expected and ignored.
+#
+# The concurrency group is the one preview.yml uses, with cancel-in-progress, so closing a pull
+# request cancels a preview still deploying for it before the delete runs. Without it, a preview
+# that finishes after the merge recreates the environment the cleanup just deleted.
 
 name: Clean Up Preview
 
@@ -16,6 +20,10 @@ on:
     types: [closed]
 
 permissions: {}
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   delete-environment:
