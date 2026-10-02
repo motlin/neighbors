@@ -59,7 +59,7 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     environment:
-      name: preview-${{ github.event.pull_request.number }}
+      name: preview
       url: https://pr-${{ github.event.pull_request.number }}.neighbors-game.pages.dev
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
