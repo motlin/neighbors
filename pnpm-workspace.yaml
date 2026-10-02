@@ -20,6 +20,7 @@ peerDependencyRules:
     vite: "*"
     vitest: "*"
 allowBuilds:
+  "@parcel/watcher": false
   "@swc/core": true
   esbuild: true
   fallow: true
