@@ -2,7 +2,7 @@
 	"$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
 	// src/**/*.mdx mirrors the Storybook stories glob in .storybook/main.ts;
 	// fallow's storybook plugin only detects *.stories.* files, not docs pages.
-	"entry": ["src/main.{ts,tsx,js,jsx}", "src/**/*.mdx"],
+	"entry": ["src/index.{ts,tsx,js,jsx}", "src/main.{ts,tsx,js,jsx}", "src/**/*.mdx"],
 	"ignorePatterns": [".storybook/**"],
 	// Tooling that never appears in an import: Storybook addons and the test
 	// runner are named as strings in .storybook/main.ts, eslint-plugin-storybook
