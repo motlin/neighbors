@@ -8,13 +8,15 @@
 	// runner are named as strings in .storybook/main.ts, eslint-plugin-storybook
 	// and jiti are loaded by vite.config.ts, and @storybook/addon-docs is only
 	// imported from .mdx docs pages, which fallow reads as production source.
-	// wrangler is a CLI, run by `just deploy` and by the deploy workflows.
+	// wrangler is a CLI, run by `just deploy` and by the deploy workflows, and
+	// @storybook/test-runner is a CLI, run by the test-storybook script.
 	"ignoreDependencies": [
 		"@chromatic-com/storybook",
 		"@storybook/addon-a11y",
 		"@storybook/addon-docs",
 		"@storybook/addon-onboarding",
 		"@storybook/addon-vitest",
+		"@storybook/test-runner",
 		"eslint-plugin-storybook",
 		"jiti",
 		"wrangler",
