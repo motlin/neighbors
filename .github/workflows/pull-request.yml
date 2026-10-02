@@ -15,10 +15,10 @@ jobs:
   forbid-merge-commits:
     runs-on: ubuntu-latest
     steps:
-      - uses: motlin/forbid-merge-commits-action@e680ef218194e9ba87fc1b44ffd9a3b0486dfc25 # main
+      - uses: motlin/forbid-merge-commits-action@49483ed78d3c59ae66e338ad12edd34c6dac7fdf # v1.0.8
 
-  automerge-dependabot:
-    if: github.event.pull_request.user.login == 'dependabot[bot]'
+  automerge-bots:
+    if: contains(fromJSON('["dependabot[bot]", "renovate[bot]"]'), github.event.pull_request.user.login)
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -28,7 +28,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Enable auto-merge for Dependabot PR
+      - name: Enable auto-merge for bot PR
         run: gh pr merge --rebase --auto "${{ github.event.pull_request.number }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -60,13 +60,14 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Run vp check --fix
+      - name: Run vp run check --fix
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
         run: |
           vp install
-          vp check --fix
+          CHECK_STATUS=0
+          vp run check --fix || CHECK_STATUS=$?
 
           if [[ -n $(git status --porcelain) ]]; then
             FIX_BRANCH="fix-${{ github.event.pull_request.number }}-check"
@@ -79,8 +80,9 @@ jobs:
             echo "vp check fixes have been pushed to the $FIX_BRANCH branch."
             exit 1
           else
-            echo "No changes needed by vp check"
+            echo "vp check exited with status $CHECK_STATUS without changing files."
           fi
+          exit "$CHECK_STATUS"
 
   pre-commit-fix:
     runs-on: ubuntu-latest
@@ -110,7 +112,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
         run: |
-          pre-commit run --all-files || true
+          CHECK_STATUS=0
+          pre-commit run --all-files || CHECK_STATUS=$?
 
           if [[ -n $(git status --porcelain) ]]; then
             FIX_BRANCH="fix-${{ github.event.pull_request.number }}-pre-commit"
@@ -123,8 +126,9 @@ jobs:
             echo "pre-commit fixes have been pushed to the $FIX_BRANCH branch."
             exit 1
           else
-            echo "No changes needed by pre-commit"
+            echo "pre-commit exited with status $CHECK_STATUS without changing files."
           fi
+          exit "$CHECK_STATUS"
 
   all-pr-checks:
     name: All PR checks
