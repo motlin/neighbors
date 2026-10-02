@@ -4,9 +4,10 @@
 # `--branch pr-N` is the whole mechanism: it is served at https://pr-N.neighbors-game.pages.dev and it
 # is replaced, not accumulated, each time the pull request is pushed to.
 #
-# There is no cleanup workflow to go with this. A Pages preview holds no state -- no Durable
-# Object, no namespace, nothing a later pull request could reach -- so an old alias left standing
-# costs nothing, and Pages retires it with the branch.
+# A Pages preview holds no state -- no Durable Object, no namespace, nothing a later pull request
+# could reach -- so an old alias left standing costs nothing, and Pages retires it with the branch.
+# The GitHub environment preview-N is what lingers; preview-cleanup.yml deletes it when the pull
+# request closes.
 #
 # Checks are duplicated from merge-group.yml because branch protection is unavailable on this plan.
 
@@ -59,7 +60,7 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     environment:
-      name: preview
+      name: preview-${{ github.event.pull_request.number }}
       url: https://pr-${{ github.event.pull_request.number }}.neighbors-game.pages.dev
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

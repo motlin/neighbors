@@ -1,0 +1,36 @@
+# Deletes a pull request's GitHub environment, preview-N, once the pull request closes.
+#
+# preview.yml gives every pull request its own environment so each one keeps its own deployment
+# link. Nothing removes those environments on its own, so the repository's Deployments list grows
+# by one per pull request. Deleting an environment takes the Administration permission, which the
+# workflow's GITHUB_TOKEN cannot be granted, so this uses ENVIRONMENTS_TOKEN: a fine-grained token
+# scoped to this repository with Administration read and write.
+#
+# Pull requests that never deployed a preview (forks, Dependabot) have no environment; the 404 for
+# those is expected and ignored.
+
+name: Clean Up Preview
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions: {}
+
+jobs:
+  delete-environment:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
+    permissions: {}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete preview-${{ github.event.pull_request.number }}
+        env:
+          TOKEN: ${{ secrets.ENVIRONMENTS_TOKEN }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          status=$(curl --silent --output /dev/null --write-out '%{http_code}' --request DELETE \
+            --header "Authorization: Bearer $TOKEN" \
+            --header "Accept: application/vnd.github+json" \
+            "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/environments/preview-$NUMBER")
+          echo "DELETE preview-$NUMBER: HTTP $status"
+          [ "$status" = 204 ] || [ "$status" = 404 ]
