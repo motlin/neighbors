@@ -61,10 +61,6 @@ storybook *args: install
 pre-commit: install
     pre-commit run --all-files
 
-# Audit public singular recipe parameters for documented options
-audit-just-options:
-    python3 scripts/audit-just-options.py
-
 # Run all pre-commit checks
 [arg("quick", long, value="true", help="Skip tests")]
 verify quick="": check build fallow pre-commit
