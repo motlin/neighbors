@@ -8,7 +8,8 @@
 
 import {MAX_PIECES, MIN_PIECES, type Options} from "../game/generate.js";
 
-export interface SizePanelProps {
+export interface SizePanelProps
+{
 	want: number;
 	/** The size of the puzzle on screen, which is what makes the deal button pending or not. */
 	current: number;
@@ -18,15 +19,35 @@ export interface SizePanelProps {
 	onDeal: () => void;
 }
 
-const CHOICES: {key: keyof Options; label: string}[] = [
-	{key: "special", label: "Include sum buildings"},
-	{key: "walls", label: "Include closed sides"},
-	{key: "blank", label: "Include blank buildings"},
-	{key: "power", label: "Include power plants"},
-	{key: "ranges", label: "Include ranges"},
+const CHOICES:
+{
+	key: keyof Options;
+	label: string;
+}[] = [
+	{
+		key: "special",
+		label: "Include sum buildings",
+	},
+	{
+		key: "walls",
+		label: "Include closed sides",
+	},
+	{
+		key: "blank",
+		label: "Include blank buildings",
+	},
+	{
+		key: "power",
+		label: "Include power plants",
+	},
+	{
+		key: "ranges",
+		label: "Include ranges",
+	},
 ];
 
-export function SizePanel({want, current, options, onWant, onOption, onDeal}: SizePanelProps) {
+export function SizePanel({want, current, options, onWant, onOption, onDeal}: SizePanelProps)
+{
 	const pending = want !== current;
 	return (
 		<div className="panel">
@@ -37,7 +58,8 @@ export function SizePanel({want, current, options, onWant, onOption, onDeal}: Si
 					className="step"
 					aria-label="Fewer pieces"
 					disabled={want <= MIN_PIECES}
-					onClick={() => {
+					onClick={() =>
+					{
 						onWant(want - 1);
 					}}
 				>
@@ -52,7 +74,8 @@ export function SizePanel({want, current, options, onWant, onOption, onDeal}: Si
 					className="step"
 					aria-label="More pieces"
 					disabled={want >= MAX_PIECES}
-					onClick={() => {
+					onClick={() =>
+					{
 						onWant(want + 1);
 					}}
 				>
@@ -66,7 +89,8 @@ export function SizePanel({want, current, options, onWant, onOption, onDeal}: Si
 				step={1}
 				value={want}
 				aria-label="Pieces per puzzle"
-				onChange={(e) => {
+				onChange={(e) =>
+				{
 					onWant(Number(e.target.value));
 				}}
 			/>
@@ -75,7 +99,8 @@ export function SizePanel({want, current, options, onWant, onOption, onDeal}: Si
 					<input
 						type="checkbox"
 						checked={options[key]}
-						onChange={(e) => {
+						onChange={(e) =>
+						{
 							onOption(key, e.target.checked);
 						}}
 					/>

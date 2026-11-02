@@ -3,7 +3,8 @@
  * seed and get the same puzzle every time.
  */
 
-export interface Rng {
+export interface Rng
+{
 	/** A float in [0, 1), the shape `Math.random` has. */
 	next: () => number;
 	/** An integer in [0, n). */
@@ -11,14 +12,17 @@ export interface Rng {
 	shuffle: <T>(a: readonly T[]) => T[];
 }
 
-function fromFloat(next: () => number): Rng {
+function fromFloat(next: () => number): Rng
+{
 	const int = (n: number) => Math.floor(next() * n);
 	return {
 		next,
 		int,
-		shuffle: <T>(a: readonly T[]): T[] => {
+		shuffle: <T>(a: readonly T[]): T[] =>
+		{
 			const r = a.slice();
-			for (let i = r.length - 1; i > 0; i--) {
+			for (let i = r.length - 1; i > 0; i--)
+			{
 				const j = int(i + 1);
 				[r[i], r[j]] = [r[j]!, r[i]!];
 			}
@@ -33,9 +37,11 @@ export const systemRng: Rng = fromFloat(Math.random);
  * A small deterministic generator (mulberry32) for the tests. Not for gameplay: a puzzle dealt
  * from a fixed seed would be the same puzzle every visit.
  */
-export function seededRng(seed: number): Rng {
+export function seededRng(seed: number): Rng
+{
 	let a = seed >>> 0;
-	return fromFloat(() => {
+	return fromFloat(() =>
+	{
 		a = (a + 0x6d2b79f5) >>> 0;
 		let t = a;
 		t = Math.imul(t ^ (t >>> 15), t | 1);

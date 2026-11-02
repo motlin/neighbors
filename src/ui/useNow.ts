@@ -5,15 +5,19 @@
 
 import {useEffect, useState} from "react";
 
-export function useNow(running: boolean, everyMs = 100): number {
+export function useNow(running: boolean, everyMs = 100): number
+{
 	const [now, setNow] = useState(() => Date.now());
-	useEffect(() => {
+	useEffect(() =>
+	{
 		if (!running) return undefined;
 		setNow(Date.now());
-		const id = setInterval(() => {
+		const id = setInterval(() =>
+		{
 			setNow(Date.now());
 		}, everyMs);
-		return () => {
+		return () =>
+		{
 			clearInterval(id);
 		};
 	}, [running, everyMs]);

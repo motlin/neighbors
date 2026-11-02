@@ -20,7 +20,8 @@ export const MAX_PIECES = 80;
 /** The smallest puzzle a power plant fits into and still has something to carry. */
 const POWER_FLOOR = 8;
 
-export interface Options {
+export interface Options
+{
 	/** Sum buildings. */
 	special: boolean;
 	/** Closed sides. */
@@ -33,7 +34,8 @@ export interface Options {
 	ranges: boolean;
 }
 
-export interface Puzzle {
+export interface Puzzle
+{
 	pieces: number;
 	labels: Board;
 	set: Shape;
@@ -44,11 +46,20 @@ export interface Puzzle {
 }
 
 /** Grow a connected blob of the right size by repeatedly budding off a cell already in it. */
-function growBlob(pieces: number, rng: Rng): {cells: [number, number][]; set: Set<Key>} | null {
+function growBlob(
+	pieces: number,
+	rng: Rng,
+):
+{
+	cells: [number, number][];
+	set: Set<Key>;
+} | null
+{
 	const cells: [number, number][] = [[0, 0]];
 	const set = new Set<Key>([key(0, 0)]);
 	let guard = 0;
-	while (cells.length < pieces && guard++ < 20000) {
+	while (cells.length < pieces && guard++ < 20000)
+	{
 		const [px, py] = cells[rng.int(cells.length)]!;
 		const opts = around(px, py).filter(([x, y]) => !set.has(key(x, y)));
 		if (!opts.length) continue;
@@ -56,7 +67,13 @@ function growBlob(pieces: number, rng: Rng): {cells: [number, number][]; set: Se
 		set.add(key(nx, ny));
 		cells.push([nx, ny]);
 	}
-	return cells.length < pieces ? null : {cells, set};
+	return cells.length < pieces
+		? null
+		:
+			{
+				cells,
+				set,
+			};
 }
 
 /**
@@ -69,9 +86,11 @@ function independentSet(
 	target: number,
 	taken: ReadonlyMap<Key, Kind> | null,
 	rng: Rng,
-): Set<Key> {
+): Set<Key>
+{
 	const picked = new Set<Key>();
-	for (const [x, y] of rng.shuffle(cells)) {
+	for (const [x, y] of rng.shuffle(cells))
+	{
 		if (picked.size >= target) break;
 		const k = key(x, y);
 		if (taken?.has(k)) continue;
@@ -86,11 +105,34 @@ function independentSet(
  * derives, rather than as a fixed pair, so the range stays valid while a design is still being
  * drawn and the underlying count keeps changing.
  */
-export function widen(v: number, r: readonly [number, number] | null, cap: number): {v: number; hi: number} {
-	if (!r) return {v, hi: 0};
+export function widen(
+	v: number,
+	r: readonly [number, number] | null,
+	cap: number,
+):
+{
+	v: number;
+	hi: number;
+}
+{
+	if (!r)
+		return {
+			v,
+			hi: 0,
+		};
 	const a = Math.max(1, v - (r[0] | 0));
 	const b = cap ? Math.min(cap, v + (r[1] | 0)) : v + (r[1] | 0);
-	return b > a ? {v: a, hi: b} : {v, hi: 0};
+	return b > a
+		?
+			{
+				v: a,
+				hi: b,
+			}
+		:
+			{
+				v,
+				hi: 0,
+			};
 }
 
 /**
@@ -102,7 +144,8 @@ export function labelShape(
 	kinds: ReadonlyMap<Key, Kind>,
 	masks: ReadonlyMap<Key, number>,
 	ranges: ReadonlyMap<Key, readonly [number, number]>,
-): Map<Key, Piece> {
+): Map<Key, Piece>
+{
 	const kindOf = (k: Key): Kind => kinds.get(k) ?? "n";
 	const rangeOf = (k: Key) => ranges.get(k) ?? null;
 	const count = (x: number, y: number) => around(x, y).filter(([a, b]) => set.has(key(a, b))).length;
@@ -110,40 +153,79 @@ export function labelShape(
 	// so what a neighbour feeds a sum is its count whenever it is a kind that counts at all.
 	const valOf = (x: number, y: number) => (counts(kindOf(key(x, y))) ? count(x, y) : 0);
 	const out = new Map<Key, Piece>();
-	for (const k of set) {
+	for (const k of set)
+	{
 		const [x, y] = xy(k);
 		const kind = kindOf(k);
 		// A blank and a plant have no sides to close and no range to widen.
 		const m = kind === "b" || kind === "p" ? 0 : (masks.get(k) ?? 0);
-		if (kind === "b") {
-			out.set(k, {k: "b", v: 0, hi: 0, m: 0});
+		if (kind === "b")
+		{
+			out.set(
+				k,
+				{
+					k: "b",
+					v: 0,
+					hi: 0,
+					m: 0,
+				},
+			);
 			continue;
 		}
-		if (kind === "p") {
+		if (kind === "p")
+		{
 			let demand = 0;
-			for (const [a, b] of around(x, y)) {
+			for (const [a, b] of around(x, y))
+			{
 				if (set.has(key(a, b)) && kindOf(key(a, b)) !== "p") demand++;
 			}
-			out.set(k, {k: "p", v: demand, hi: 0, m: 0});
+			out.set(
+				k,
+				{
+					k: "p",
+					v: demand,
+					hi: 0,
+					m: 0,
+				},
+			);
 			continue;
 		}
-		if (kind === "s") {
+		if (kind === "s")
+		{
 			let t = 0;
 			for (const [a, b] of around(x, y)) if (set.has(key(a, b))) t += valOf(a, b);
 			const w = widen(t, rangeOf(k), 0);
-			out.set(k, {k: "s", v: w.v, hi: w.hi, m});
+			out.set(
+				k,
+				{
+					k: "s",
+					v: w.v,
+					hi: w.hi,
+					m,
+				},
+			);
 			continue;
 		}
 		// Eight is the cap on a count: there are only eight cells to touch.
 		const w = widen(count(x, y), rangeOf(k), 8);
-		out.set(k, {k: kind, v: w.v, hi: w.hi, m});
+		out.set(
+			k,
+			{
+				k: kind,
+				v: w.v,
+				hi: w.hi,
+				m,
+			},
+		);
 	}
 	return out;
 }
 
-function pickRanges(set: Shape, density: number, kinds: ReadonlyMap<Key, Kind>, rng: Rng): Map<Key, [number, number]> {
+function pickRanges(set: Shape, density: number, kinds: ReadonlyMap<Key, Kind>, rng: Rng): Map<Key, [number, number]>
+{
 	const out = new Map<Key, [number, number]>();
-	for (const k of set) {
+	for (const k of set)
+	{
 		const kind = kinds.get(k) ?? "n";
 		if (kind === "b" || kind === "p") continue;
 		if (rng.next() > density) continue;
@@ -156,16 +238,19 @@ function pickRanges(set: Shape, density: number, kinds: ReadonlyMap<Key, Kind>, 
 }
 
 /** Close off sides that face empty space; closing one that faces the shape would be unbuildable. */
-function pickMasks(set: Shape, density: number, kinds: ReadonlyMap<Key, Kind>, rng: Rng): Map<Key, number> {
+function pickMasks(set: Shape, density: number, kinds: ReadonlyMap<Key, Kind>, rng: Rng): Map<Key, number>
+{
 	const masks = new Map<Key, number>();
-	for (const k of set) {
+	for (const k of set)
+	{
 		const kind = kinds.get(k) ?? "n";
 		if (kind === "b" || kind === "p") continue;
 		if (rng.next() > density) continue;
 		const [x, y] = xy(k);
 		const nb = around(x, y);
 		const cand: number[] = [];
-		for (let i = 0; i < 8; i++) {
+		for (let i = 0; i < 8; i++)
+		{
 			const cell = nb[i]!;
 			if (!set.has(key(cell[0], cell[1]))) cand.push(i);
 		}
@@ -177,45 +262,54 @@ function pickMasks(set: Shape, density: number, kinds: ReadonlyMap<Key, Kind>, r
 	return masks;
 }
 
-export function generate(pieces: number, opt: Options, rng: Rng = systemRng): Puzzle | null {
+export function generate(pieces: number, opt: Options, rng: Rng = systemRng): Puzzle | null
+{
 	const want = Math.max(MIN_PIECES, Math.min(MAX_PIECES, pieces | 0));
 	// A plant needs a few buildings around it to be carrying anything, so below this the power
 	// setting is ignored rather than obeyed: obeying it would mean never dealing a puzzle at all.
 	const usePower = opt.power && want >= POWER_FLOOR;
-	for (let attempt = 0; attempt < 500; attempt++) {
+	for (let attempt = 0; attempt < 500; attempt++)
+	{
 		const blob = growBlob(want, rng);
 		if (!blob) continue;
 		const kinds = new Map<Key, Kind>();
 
 		// Plants go first: they decide which buildings end up needing power.
 		let plants = new Set<Key>();
-		if (usePower) {
+		if (usePower)
+		{
 			plants = independentSet(blob.cells, Math.max(1, Math.round(want * 0.1)), null, rng);
 			for (const k of plants) kinds.set(k, "p");
-			for (const k of plants) {
+			for (const k of plants)
+			{
 				const [x, y] = xy(k);
 				const free = around(x, y).filter(([b, c]) => blob.set.has(key(b, c)) && !kinds.has(key(b, c)));
-				if (!free.length) {
+				if (!free.length)
+				{
 					kinds.delete(k);
 					plants.delete(k);
 					continue;
 				}
-				for (const [b, c] of rng.shuffle(free).slice(0, 1 + rng.int(Math.min(3, free.length)))) {
+				for (const [b, c] of rng.shuffle(free).slice(0, 1 + rng.int(Math.min(3, free.length))))
+				{
 					kinds.set(key(b, c), "e");
 				}
 			}
 		}
 		if (usePower && plants.size === 0) continue;
 
-		if (opt.special) {
+		if (opt.special)
+		{
 			const sums = independentSet(blob.cells, Math.max(1, Math.round(want * 0.15)), kinds, rng);
 			for (const k of sums) if (!kinds.has(k)) kinds.set(k, "s");
 			if ([...kinds.values()].every((v) => v !== "s")) continue;
 		}
-		if (opt.blank) {
+		if (opt.blank)
+		{
 			const target = Math.max(1, Math.round(want * 0.1));
 			let got = 0;
-			for (const [x, y] of rng.shuffle(blob.cells)) {
+			for (const [x, y] of rng.shuffle(blob.cells))
+			{
 				if (got >= target) break;
 				const k = key(x, y);
 				if (kinds.has(k)) continue;

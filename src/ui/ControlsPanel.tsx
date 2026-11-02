@@ -16,7 +16,8 @@ const DESIGN_HELP =
 	"Draw a shape and every building works out its own number. Type changes what a building is. Sides " +
 	"closes off cells that must stay empty. Keys T and X switch tools, U undoes.";
 
-export interface ControlsPanelProps {
+export interface ControlsPanelProps
+{
 	designing: boolean;
 	canUndo: boolean;
 	onUndo: () => void;
@@ -24,7 +25,8 @@ export interface ControlsPanelProps {
 	onToggleDesign: () => void;
 }
 
-export function ControlsPanel({designing, canUndo, onUndo, onRestart, onToggleDesign}: ControlsPanelProps) {
+export function ControlsPanel({designing, canUndo, onUndo, onRestart, onToggleDesign}: ControlsPanelProps)
+{
 	return (
 		<div className="panel">
 			<h2>Controls</h2>

@@ -3,13 +3,15 @@
  * in the controls panel, where it is looked up.
  */
 
-export interface HeaderProps {
+export interface HeaderProps
+{
 	/** The piece count on the plate: the puzzle's size, or the design's so far. */
 	count: number;
 	caption: string;
 }
 
-export function Header({count, caption}: HeaderProps) {
+export function Header({count, caption}: HeaderProps)
+{
 	return (
 		<header>
 			<div>

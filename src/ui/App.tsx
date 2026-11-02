@@ -7,7 +7,8 @@
  */
 
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {
+import
+{
 	clearDesign,
 	designBag,
 	designCode,
@@ -46,7 +47,14 @@ import type {Kind, Pid} from "../game/types.js";
 
 const DEFAULT_PIECES = 12;
 
-const ALL_ON: Options = {special: true, walls: true, blank: true, power: true, ranges: true};
+const ALL_ON: Options =
+{
+	special: true,
+	walls: true,
+	blank: true,
+	power: true,
+	ranges: true,
+};
 
 /** Enough to tell two solves apart in a list of twenty. */
 const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -54,12 +62,14 @@ const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2
 /** How long a refusal stays up in the toolbar before the tool hint comes back. */
 const HINT_MS = 2200;
 
-export interface AppProps {
+export interface AppProps
+{
 	/** Where the solved list is kept. Swapped out in tests and in Storybook. */
 	store?: Store;
 }
 
-export function App({store = browserStore}: AppProps) {
+export function App({store = browserStore}: AppProps)
+{
 	const [want, setWant] = useState(DEFAULT_PIECES);
 	const [options, setOptions] = useState<Options>(ALL_ON);
 	const [designing, setDesigning] = useState(false);
@@ -67,32 +77,42 @@ export function App({store = browserStore}: AppProps) {
 	const [design, setDesign] = useState<DesignState>(emptyDesign);
 	const [history, setHistory] = useState<readonly HistoryEntry[]>([]);
 	const [refusal, setRefusal] = useState<string | null>(null);
-	const [win, setWin] = useState({prevBest: 0, newBest: false});
+	const [win, setWin] = useState(
+		{
+			prevBest: 0,
+			newBest: false,
+		},
+	);
 	const [play, setPlay] = useState<PlayState>(() => deal(DEFAULT_PIECES, ALL_ON));
 
 	const refusalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 	useEffect(
-		() => () => {
+		() => () =>
+		{
 			if (refusalTimer.current) clearTimeout(refusalTimer.current);
 		},
 		[],
 	);
 
-	const refuse = useCallback((why: string) => {
+	const refuse = useCallback((why: string) =>
+	{
 		setRefusal(why);
 		if (refusalTimer.current) clearTimeout(refusalTimer.current);
-		refusalTimer.current = setTimeout(() => {
+		refusalTimer.current = setTimeout(() =>
+		{
 			setRefusal(null);
 		}, HINT_MS);
 	}, []);
 
 	// The solved list is read once, on the way in. Everything after that is written through.
-	useEffect(() => {
+	useEffect(() =>
+	{
 		setHistory(parseHistory(store.get(HISTORY_KEY)));
 	}, [store]);
 
 	const saveHistory = useCallback(
-		(next: readonly HistoryEntry[]) => {
+		(next: readonly HistoryEntry[]) =>
+		{
 			setHistory(next);
 			store.set(HISTORY_KEY, serializeHistory(next));
 		},
@@ -106,103 +126,185 @@ export function App({store = browserStore}: AppProps) {
 	const view = useMemo(() => playCells(play), [play]);
 
 	const deal3 = useCallback(
-		(pieces: number) => {
+		(pieces: number) =>
+		{
 			const puzzle = generate(pieces, options);
-			if (!puzzle) {
+			if (!puzzle)
+			{
 				refuse("Couldn’t make one that size. Try another.");
 				return;
 			}
 			setPlay(
-				startPuzzle(puzzle.bag, {
-					origin: "dealt",
-					code: encodeSet(puzzle.set, puzzle.kinds, puzzle.masks, puzzle.ranges),
-				}),
+				startPuzzle(
+					puzzle.bag,
+					{
+						origin: "dealt",
+						code: encodeSet(puzzle.set, puzzle.kinds, puzzle.masks, puzzle.ranges),
+					},
+				),
 			);
 			setWant(puzzle.pieces);
-			setWin({prevBest: 0, newBest: false});
+			setWin(
+				{
+					prevBest: 0,
+					newBest: false,
+				},
+			);
 		},
 		[options, refuse],
 	);
 
 	/** Start a puzzle from a list of pieces, which is how history and the designer both hand off. */
-	const start = useCallback((bag: readonly Pid[], opt: {origin: "dealt" | "made"; code: string; id?: string}) => {
-		setPlay(startPuzzle(bag, {origin: opt.origin, code: opt.code, id: opt.id ?? null}));
-		setWant(bag.length);
-		setWin({prevBest: 0, newBest: false});
-		setDesigning(false);
-	}, []);
+	const start = useCallback(
+		(
+			bag: readonly Pid[],
+			opt:
+			{
+				origin: "dealt" | "made";
+				code: string;
+				id?: string;
+			},
+		) =>
+		{
+			setPlay(
+				startPuzzle(
+					bag,
+					{
+						origin: opt.origin,
+						code: opt.code,
+						id: opt.id ?? null,
+					},
+				),
+			);
+			setWant(bag.length);
+			setWin(
+				{
+					prevBest: 0,
+					newBest: false,
+				},
+			);
+			setDesigning(false);
+		},
+		[],
+	);
 
-	const onPlace = (x: number, y: number) => {
+	const onPlace = (x: number, y: number) =>
+	{
 		const next = place(play, x, y, Date.now());
 		if (next === play) return;
-		if (next.won && !play.won) {
+		if (next.won && !play.won)
+		{
 			const ms = elapsed(next.startAt, next.finishAt, Date.now());
 			const result = recordSolve(
 				history,
-				{bag: next.start, origin: next.origin, code: next.code, histId: next.histId},
+				{
+					bag: next.start,
+					origin: next.origin,
+					code: next.code,
+					histId: next.histId,
+				},
 				ms,
 				newId(),
 			);
 			saveHistory(result.history);
-			setWin({prevBest: result.prevBest, newBest: result.newBest});
-			setPlay({...next, histId: result.id});
+			setWin(
+				{
+					prevBest: result.prevBest,
+					newBest: result.newBest,
+				},
+			);
+			setPlay(
+				{
+					...next,
+					histId: result.id,
+				},
+			);
 			return;
 		}
 		setPlay(next);
 	};
 
-	const onUndo = () => {
+	const onUndo = () =>
+	{
 		if (designing) setDesign(undoDesign(design));
 		else setPlay(undo(play));
 	};
-	const onRestart = () => {
+	const onRestart = () =>
+	{
 		if (designing) setDesign(clearDesign(design));
 		else setPlay(restart(play));
 	};
 
-	const toggleDesign = () => {
+	const toggleDesign = () =>
+	{
 		setDesigning((was) => !was);
 		setTool("place");
 		setRefusal(null);
 	};
 
-	const playShape = () => {
+	const playShape = () =>
+	{
 		const status = designStatus(design);
 		if (!status.ok) return;
-		start(designBag(design), {origin: "made", code: designCode(design)});
+		start(
+			designBag(design),
+			{
+				origin: "made",
+				code: designCode(design),
+			},
+		);
 	};
 
-	const replay = (id: string) => {
+	const replay = (id: string) =>
+	{
 		const e = history.find((h) => h.id === id);
 		if (!e) return;
-		start(e.bag, {origin: e.origin, code: e.code, id: e.id});
+		start(
+			e.bag,
+			{
+				origin: e.origin,
+				code: e.code,
+				id: e.id,
+			},
+		);
 	};
 
 	// Digits pick a plain building out of the bag; the letters are the designer's tools. Typing
 	// into the share code field is not a shortcut, so a field with focus keeps its keystrokes.
-	useEffect(() => {
-		const onKey = (e: KeyboardEvent) => {
+	useEffect(() =>
+	{
+		const onKey = (e: KeyboardEvent) =>
+		{
 			// Typing into the share code field is not a shortcut, so a field with focus keeps its keys.
 			if (e.target instanceof HTMLElement && e.target.tagName === "INPUT") return;
-			if (e.key >= "0" && e.key <= "9" && !designing) {
+			if (e.key >= "0" && e.key <= "9" && !designing)
+			{
 				const hit = Object.keys(play.bag).find(
 					(p) => (play.bag[p] ?? 0) > 0 && p.startsWith("n") && unpid(p).v === Number(e.key),
 				);
-				if (hit !== undefined) {
-					setPlay((s) => ({...s, sel: hit}));
+				if (hit !== undefined)
+				{
+					setPlay((s) => (
+					{
+						...s,
+						sel: hit,
+					}));
 				}
 				return;
 			}
 			const k = e.key.toLowerCase();
 			if (k === "t" && designing) setTool((was) => (was === "type" ? "place" : "type"));
 			else if (k === "x" && designing) setTool((was) => (was === "x" ? "place" : "x"));
-			else if (k === "u" || (k === "z" && (e.metaKey || e.ctrlKey))) {
+			else if (k === "u" || (k === "z" && (e.metaKey || e.ctrlKey)))
+			{
 				e.preventDefault();
 				onUndo();
-			} else if (k === "r") onRestart();
+			}
+			else if (k === "r") onRestart();
 		};
 		document.addEventListener("keydown", onKey);
-		return () => {
+		return () =>
+		{
 			document.removeEventListener("keydown", onKey);
 		};
 	});
@@ -220,7 +322,8 @@ export function App({store = browserStore}: AppProps) {
 					<Toolbar
 						designing={designing}
 						tool={tool}
-						onTool={(t) => {
+						onTool={(t) =>
+						{
 							setTool(t);
 							setRefusal(null);
 						}}
@@ -233,16 +336,20 @@ export function App({store = browserStore}: AppProps) {
 						<DesignBoard
 							state={design}
 							tool={tool}
-							onStrokeStart={(x, y) => {
+							onStrokeStart={(x, y) =>
+							{
 								setDesign((s) => strokeStart(s, x, y));
 							}}
-							onStrokePaint={(x, y) => {
+							onStrokePaint={(x, y) =>
+							{
 								setDesign((s) => strokePaint(s, x, y));
 							}}
-							onStrokeEnd={() => {
+							onStrokeEnd={() =>
+							{
 								setDesign((s) => strokeEnd(s));
 							}}
-							onSelect={(x, y) => {
+							onSelect={(x, y) =>
+							{
 								setDesign((s) => select(s, x, y));
 							}}
 						/>
@@ -250,7 +357,8 @@ export function App({store = browserStore}: AppProps) {
 						<PlayBoard
 							view={view}
 							onPlace={onPlace}
-							onErase={(x, y) => {
+							onErase={(x, y) =>
+							{
 								setPlay(erase(play, x, y));
 							}}
 						/>
@@ -261,13 +369,20 @@ export function App({store = browserStore}: AppProps) {
 							time={time ?? 0}
 							prevBest={win.prevBest}
 							newBest={win.newBest}
-							onPeek={() => {
-								setPlay((s) => ({...s, peek: true}));
+							onPeek={() =>
+							{
+								setPlay((s) => (
+								{
+									...s,
+									peek: true,
+								}));
 							}}
-							onHarder={() => {
+							onHarder={() =>
+							{
 								deal3(Math.min(MAX_PIECES, play.pieces + 3));
 							}}
-							onAgain={() => {
+							onAgain={() =>
+							{
 								deal3(play.pieces);
 							}}
 						/>
@@ -280,8 +395,13 @@ export function App({store = browserStore}: AppProps) {
 									<button
 										type="button"
 										className="linkbtn"
-										onClick={() => {
-											setPlay((s) => ({...s, peek: false}));
+										onClick={() =>
+										{
+											setPlay((s) => (
+											{
+												...s,
+												peek: false,
+											}));
 										}}
 									>
 										Show summary
@@ -311,8 +431,13 @@ export function App({store = browserStore}: AppProps) {
 									<BagPanel
 										bag={play.bag}
 										selected={play.sel}
-										onPick={(id) => {
-											setPlay((s) => ({...s, sel: id}));
+										onPick={(id) =>
+										{
+											setPlay((s) => (
+											{
+												...s,
+												sel: id,
+											}));
 										}}
 										emptyMessage="Everything placed."
 									/>
@@ -322,13 +447,20 @@ export function App({store = browserStore}: AppProps) {
 								want={want}
 								current={play.pieces}
 								options={options}
-								onWant={(n) => {
+								onWant={(n) =>
+								{
 									setWant(Math.max(MIN_PIECES, Math.min(MAX_PIECES, n)));
 								}}
-								onOption={(k, on) => {
-									setOptions((o) => ({...o, [k]: on}));
+								onOption={(k, on) =>
+								{
+									setOptions((o) => (
+									{
+										...o,
+										[k]: on,
+									}));
 								}}
-								onDeal={() => {
+								onDeal={() =>
+								{
 									deal3(want);
 								}}
 							/>
@@ -339,20 +471,25 @@ export function App({store = browserStore}: AppProps) {
 							state={design}
 							tool={tool}
 							onPlay={playShape}
-							onClear={() => {
+							onClear={() =>
+							{
 								setDesign(clearDesign(design));
 							}}
-							onKind={(kind: Kind) => {
+							onKind={(kind: Kind) =>
+							{
 								setDesign((s) => setKind(s, kind));
 							}}
-							onRange={(end, by) => {
+							onRange={(end, by) =>
+							{
 								setDesign((s) => nudgeRange(s, end, by));
 							}}
-							onToggleSide={(dir) => {
+							onToggleSide={(dir) =>
+							{
 								setDesign((s) => toggleSide(s, dir));
 							}}
 							onRefuse={refuse}
-							onLoad={(code) => {
+							onLoad={(code) =>
+							{
 								const loaded = loadDesign(design, code);
 								if (!loaded) return false;
 								setDesign(loaded);
@@ -365,10 +502,12 @@ export function App({store = browserStore}: AppProps) {
 						history={history}
 						currentId={play.histId}
 						onReplay={replay}
-						onDelete={(id) => {
+						onDelete={(id) =>
+						{
 							saveHistory(removeEntry(history, id));
 						}}
-						onClear={() => {
+						onClear={() =>
+						{
 							saveHistory([]);
 						}}
 					/>
@@ -389,11 +528,15 @@ export function App({store = browserStore}: AppProps) {
  * The opening puzzle. Generation can fail on an unlucky run of shapes, and the page has to render
  * either way, so a failure opens on an empty board rather than on nothing.
  */
-function deal(pieces: number, options: Options): PlayState {
+function deal(pieces: number, options: Options): PlayState
+{
 	const puzzle = generate(pieces, options);
 	if (!puzzle) return startPuzzle([]);
-	return startPuzzle(puzzle.bag, {
-		origin: "dealt",
-		code: encodeSet(puzzle.set, puzzle.kinds, puzzle.masks, puzzle.ranges),
-	});
+	return startPuzzle(
+		puzzle.bag,
+		{
+			origin: "dealt",
+			code: encodeSet(puzzle.set, puzzle.kinds, puzzle.masks, puzzle.ranges),
+		},
+	);
 }

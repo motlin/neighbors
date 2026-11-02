@@ -4,7 +4,8 @@ import {fireEvent, render, screen} from "@testing-library/react";
 import {HistoryPanel} from "../../src/ui/HistoryPanel.js";
 import type {HistoryEntry} from "../../src/game/history.js";
 
-const entry = (over: Partial<HistoryEntry> = {}): HistoryEntry => ({
+const entry = (over: Partial<HistoryEntry> = {}): HistoryEntry => (
+{
 	id: "a",
 	n: 12,
 	bag: [],
@@ -18,21 +19,36 @@ const entry = (over: Partial<HistoryEntry> = {}): HistoryEntry => ({
 const noop = vi.fn<(id: string) => void>();
 const noopClear = vi.fn<() => void>();
 
-describe("HistoryPanel", () => {
-	it("invites a first solve when the list is empty", () => {
+describe("HistoryPanel", () =>
+{
+	it("invites a first solve when the list is empty", () =>
+	{
 		render(<HistoryPanel history={[]} currentId={null} onReplay={noop} onDelete={noop} onClear={noopClear} />);
 		expect(screen.getByText("Solve a puzzle and it lands here.")).toBeDefined();
 	});
 
-	it("hides the clear button while there is nothing to clear", () => {
+	it("hides the clear button while there is nothing to clear", () =>
+	{
 		render(<HistoryPanel history={[]} currentId={null} onReplay={noop} onDelete={noop} onClear={noopClear} />);
 		expect(screen.queryByText("Clear")).toBeNull();
 	});
 
-	it("summarises a row by where it came from, its plants and its best time", () => {
+	it("summarises a row by where it came from, its plants and its best time", () =>
+	{
 		render(
 			<HistoryPanel
-				history={[entry({tally: {p: 2}, best: 61_200, origin: "made"})]}
+				history={[
+					entry(
+						{
+							tally:
+							{
+								p: 2,
+							},
+							best: 61_200,
+							origin: "made",
+						},
+					),
+				]}
 				currentId={null}
 				onReplay={noop}
 				onDelete={noop}
@@ -42,11 +58,18 @@ describe("HistoryPanel", () => {
 		expect(screen.getByText("you made it · 2 plants · 1:01.2")).toBeDefined();
 	});
 
-	it("plays a puzzle again when its row is tapped", () => {
+	it("plays a puzzle again when its row is tapped", () =>
+	{
 		const onReplay = vi.fn<(id: string) => void>();
 		render(
 			<HistoryPanel
-				history={[entry({id: "x"})]}
+				history={[
+					entry(
+						{
+							id: "x",
+						},
+					),
+				]}
 				currentId={null}
 				onReplay={onReplay}
 				onDelete={noop}
@@ -57,10 +80,22 @@ describe("HistoryPanel", () => {
 		expect(onReplay).toHaveBeenCalledWith("x");
 	});
 
-	it("marks the row for the puzzle on screen", () => {
+	it("marks the row for the puzzle on screen", () =>
+	{
 		const {container} = render(
 			<HistoryPanel
-				history={[entry({id: "x"}), entry({id: "y"})]}
+				history={[
+					entry(
+						{
+							id: "x",
+						},
+					),
+					entry(
+						{
+							id: "y",
+						},
+					),
+				]}
 				currentId="y"
 				onReplay={noop}
 				onDelete={noop}
@@ -71,7 +106,8 @@ describe("HistoryPanel", () => {
 	});
 
 	// Clearing the list has no undo, so the button asks twice.
-	it("asks twice before clearing the whole list", () => {
+	it("asks twice before clearing the whole list", () =>
+	{
 		const onClear = vi.fn<() => void>();
 		render(<HistoryPanel history={[entry()]} currentId={null} onReplay={noop} onDelete={noop} onClear={onClear} />);
 		fireEvent.click(screen.getByText("Clear"));
@@ -81,11 +117,18 @@ describe("HistoryPanel", () => {
 	});
 
 	// Removing one row is a smaller thing and asks once.
-	it("removes a single row on one tap", () => {
+	it("removes a single row on one tap", () =>
+	{
 		const onDelete = vi.fn<(id: string) => void>();
 		render(
 			<HistoryPanel
-				history={[entry({id: "x"})]}
+				history={[
+					entry(
+						{
+							id: "x",
+						},
+					),
+				]}
 				currentId={null}
 				onReplay={noop}
 				onDelete={onDelete}

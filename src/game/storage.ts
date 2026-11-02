@@ -8,32 +8,43 @@
  * remember anything should still play.
  */
 
-export interface Store {
+export interface Store
+{
 	get: (key: string) => string | null;
 	set: (key: string, value: string) => void;
 }
 
 export const HISTORY_KEY = "history";
 
-export const browserStore: Store = {
-	get(key) {
-		try {
+export const browserStore: Store =
+{
+	get(key)
+	{
+		try
+		{
 			return globalThis.localStorage.getItem(key);
-		} catch {
+		}
+		catch
+		{
 			return null;
 		}
 	},
-	set(key, value) {
-		try {
+	set(key, value)
+	{
+		try
+		{
 			globalThis.localStorage.setItem(key, value);
-		} catch {
+		}
+		catch
+		{
 			// Nothing to do and nothing to say: the game plays either way.
 		}
 	},
 };
 
 /** A store that remembers nothing, for tests and for Storybook. */
-export function memoryStore(initial: Record<string, string> = {}): Store {
+export function memoryStore(initial: Record<string, string> = {}): Store
+{
 	const held = new Map(Object.entries(initial));
 	return {
 		get: (key) => held.get(key) ?? null,

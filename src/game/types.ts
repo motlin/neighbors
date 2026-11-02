@@ -15,7 +15,8 @@
  */
 export type Kind = "n" | "s" | "b" | "p" | "e";
 
-export interface Piece {
+export interface Piece
+{
 	readonly k: Kind;
 	/** The number it wants. For a plant, how many buildings it can carry. */
 	readonly v: number;

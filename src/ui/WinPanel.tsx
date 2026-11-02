@@ -8,7 +8,8 @@
 
 import {fmt} from "../game/clock.js";
 
-export interface WinPanelProps {
+export interface WinPanelProps
+{
 	pieces: number;
 	/** The solve time in milliseconds, or zero for a puzzle finished without the clock running. */
 	time: number;
@@ -20,7 +21,8 @@ export interface WinPanelProps {
 	onAgain: () => void;
 }
 
-export function WinPanel({pieces, time, prevBest, newBest, onPeek, onHarder, onAgain}: WinPanelProps) {
+export function WinPanel({pieces, time, prevBest, newBest, onPeek, onHarder, onAgain}: WinPanelProps)
+{
 	return (
 		<div className="win">
 			<h3>Solved</h3>
@@ -33,7 +35,13 @@ export function WinPanel({pieces, time, prevBest, newBest, onPeek, onHarder, onA
 				) : null}
 			</div>
 			<p>All {pieces} pieces agree with their neighbours.</p>
-			<div className="controls" style={{justifyContent: "center"}}>
+			<div
+				className="controls"
+				style={
+				{
+					justifyContent: "center",
+				}}
+			>
 				<button type="button" className="act" onClick={onPeek}>
 					See the board
 				</button>

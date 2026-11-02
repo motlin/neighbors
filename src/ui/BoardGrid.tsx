@@ -9,7 +9,8 @@ import type {CSSProperties, PointerEvent as ReactPointerEvent, ReactNode} from "
 import type {Box} from "../game/geometry.js";
 import {useBoardSize} from "./useBoardSize.js";
 
-export interface BoardCell {
+export interface BoardCell
+{
 	key: string;
 	className: string;
 	label: string;
@@ -18,7 +19,8 @@ export interface BoardCell {
 	onClick?: () => void;
 }
 
-export interface BoardGridProps {
+export interface BoardGridProps
+{
 	box: Box;
 	/** In reading order across the box, left to right and top to bottom. */
 	cells: BoardCell[];
@@ -42,12 +44,14 @@ export function BoardGrid({
 	onPaintMove,
 	onPaintEnd,
 	onSize,
-}: BoardGridProps) {
+}: BoardGridProps)
+{
 	const cols = box.x1 - box.x0 + 1;
 	const {paneRef, size} = useBoardSize(cols, frozenSize);
 	useEffect(() => onSize?.(size), [onSize, size]);
 
-	const style = {
+	const style =
+	{
 		gridTemplateColumns: `repeat(${cols}, ${size}px)`,
 		gridAutoRows: `${size}px`,
 		// The board rules itself in cell-sized steps, so it has to be told what a cell came out at.

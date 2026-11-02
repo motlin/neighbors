@@ -1,4 +1,5 @@
-.cell {
+.cell
+{
 	position: relative;
 	padding: 0;
 	font: inherit;
@@ -12,99 +13,122 @@
 		background 0.12s ease,
 		transform 0.1s ease;
 }
-.cell.void {
+.cell.void
+{
 	cursor: default;
 }
 /* the board's own ruling draws every cell edge now, so a dashed outline here would only double
    up against the neighbouring cell's. a placeable cell is lit instead of ringed. */
-.cell.open {
+.cell.open
+{
 	cursor: pointer;
 	background: rgba(226, 240, 251, 0.06);
 }
-.cell.open:hover {
+.cell.open:hover
+{
 	background: rgba(226, 240, 251, 0.16);
 }
-.cell.open:focus-visible {
+.cell.open:focus-visible
+{
 	outline: 3px solid var(--ink);
 	outline-offset: 2px;
 	z-index: 4;
 }
-.cell.open .adj {
+.cell.open .adj
+{
 	font-size: calc(var(--fs)*0.46);
 	color: var(--soft);
 	opacity: 0.5;
 }
 
-.cell.cube {
+.cell.cube
+{
 	border-color: var(--ink);
 	background: var(--cell);
 	cursor: default;
 }
-.cell .num {
+.cell .num
+{
 	font-family: "Archivo Black", sans-serif;
 	font-size: var(--fs);
 	line-height: 1;
 }
-.cell.cube {
+.cell.cube
+{
 	flex-direction: column;
 	gap: 0;
 }
-.board.tiny .xm {
+.board.tiny .xm
+{
 	width: calc(var(--fs)*0.42);
 	height: calc(var(--fs)*0.42);
 	--xw: 1.5px;
 }
-.cell.cube .xm {
+.cell.cube .xm
+{
 	opacity: 0.6;
 }
-.tile .xm {
+.tile .xm
+{
 	opacity: 0.95;
 }
-.tile {
+.tile
+{
 	--fs: 21px;
 }
-.cell.cube.met {
+.cell.cube.met
+{
 	background: var(--met);
 	color: var(--on-met);
 	border-color: var(--met);
 }
-.cell.cube.dead {
+.cell.cube.dead
+{
 	background: var(--dead);
 	color: var(--on-dead);
 	border-color: var(--dead);
 }
-.cell.cube.dead::after {
+.cell.cube.dead::after
+{
 	content: "";
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
 	background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(0, 0, 0, 0.24) 6px 9px);
 }
-.cell.cube.short {
+.cell.cube.short
+{
 	box-shadow: inset 0 0 0 2px rgba(226, 240, 251, 0.22);
 }
-.cell.cube.erasable {
+.cell.cube.erasable
+{
 	cursor: pointer;
 }
 /* the mark has to stay inside the cell's own box. shrinking the cell on hover pulled it out from
    under the pointer, which dropped the hover, which grew it back under the pointer again: a piece
    held still near an edge flashed red ten times a second. */
-.cell.cube.erasable:hover {
+.cell.cube.erasable:hover
+{
 	box-shadow: inset 0 0 0 3px var(--dead);
 }
-.cell.cube.erasable:focus-visible {
+.cell.cube.erasable:focus-visible
+{
 	outline: 3px solid var(--dead);
 	outline-offset: 2px;
 	z-index: 4;
 }
-.cell.just {
+.cell.just
+{
 	animation: pop 0.18s ease-out;
 }
-@keyframes pop {
-	from {
+@keyframes pop
+{
+	from
+	{
 		transform: scale(0.84);
 	}
-	to {
+	to
+	{
 		transform: scale(1);
 	}
 }

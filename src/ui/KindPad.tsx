@@ -13,7 +13,8 @@ import type {Kind} from "../game/types.js";
 /** The order the picker offers them in: the two common ones first, the awkward ones after. */
 const ORDER: Kind[] = ["n", "s", "e", "p", "b"];
 
-export interface KindPadProps {
+export interface KindPadProps
+{
 	state: DesignState;
 	onKind: (kind: Kind) => void;
 	onRange: (end: "d" | "u", by: number) => void;
@@ -21,9 +22,11 @@ export interface KindPadProps {
 	onRefuse: (why: string) => void;
 }
 
-export function KindPad({state, onKind, onRange, onRefuse}: KindPadProps) {
+export function KindPad({state, onKind, onRange, onRefuse}: KindPadProps)
+{
 	const sel = state.sel;
-	if (sel === null || !state.shape.has(sel)) {
+	if (sel === null || !state.shape.has(sel))
+	{
 		return <div className="dstat">Tap a building on the board to change what it is.</div>;
 	}
 	const current = kindAt(state, sel);
@@ -35,7 +38,8 @@ export function KindPad({state, onKind, onRange, onRefuse}: KindPadProps) {
 	return (
 		<>
 			<div className="kpad">
-				{ORDER.map((kind) => {
+				{ORDER.map((kind) =>
+				{
 					const why = kindBlocked(state, sel, kind);
 					return (
 						<button
@@ -44,7 +48,8 @@ export function KindPad({state, onKind, onRange, onRefuse}: KindPadProps) {
 							className={`kc${kind === current ? " on" : ""}${why === null ? "" : " no"}`}
 							title={why ?? undefined}
 							aria-label={`${KINDLABEL[kind]}: ${KINDBLURB[kind]}`}
-							onClick={() => {
+							onClick={() =>
+							{
 								if (why === null) onKind(kind);
 								else onRefuse(why);
 							}}
@@ -66,7 +71,8 @@ export function KindPad({state, onKind, onRange, onRefuse}: KindPadProps) {
 							className="rc"
 							aria-label="Raise the low end"
 							disabled={slack[0] <= 0}
-							onClick={() => {
+							onClick={() =>
+							{
 								onRange("d", -1);
 							}}
 						>
@@ -78,7 +84,8 @@ export function KindPad({state, onKind, onRange, onRefuse}: KindPadProps) {
 							className="rc"
 							aria-label="Lower the low end"
 							disabled={slack[0] >= 4}
-							onClick={() => {
+							onClick={() =>
+							{
 								onRange("d", 1);
 							}}
 						>
@@ -89,7 +96,8 @@ export function KindPad({state, onKind, onRange, onRefuse}: KindPadProps) {
 							className="rc"
 							aria-label="Lower the high end"
 							disabled={slack[1] <= 0}
-							onClick={() => {
+							onClick={() =>
+							{
 								onRange("u", -1);
 							}}
 						>
@@ -101,7 +109,8 @@ export function KindPad({state, onKind, onRange, onRefuse}: KindPadProps) {
 							className="rc"
 							aria-label="Raise the high end"
 							disabled={slack[1] >= 4}
-							onClick={() => {
+							onClick={() =>
+							{
 								onRange("u", 1);
 							}}
 						>

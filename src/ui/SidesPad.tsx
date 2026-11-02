@@ -12,18 +12,22 @@ import {kindAt, type DesignState} from "../game/design.js";
 import {labelShape} from "../game/generate.js";
 import {KINDLABEL} from "../game/piece.js";
 
-export interface SidesPadProps {
+export interface SidesPadProps
+{
 	state: DesignState;
 	onToggle: (dir: number) => void;
 }
 
-export function SidesPad({state, onToggle}: SidesPadProps) {
+export function SidesPad({state, onToggle}: SidesPadProps)
+{
 	const sel = state.sel;
-	if (sel === null || !state.shape.has(sel)) {
+	if (sel === null || !state.shape.has(sel))
+	{
 		return <div className="dstat">Tap a building on the board to choose its sides.</div>;
 	}
 	const kind = kindAt(state, sel);
-	if (kind === "b" || kind === "p") {
+	if (kind === "b" || kind === "p")
+	{
 		return <div className="dstat">{`${KINDLABEL[kind]}s have no closed sides.`}</div>;
 	}
 	const [x, y] = xy(sel);
@@ -36,9 +40,12 @@ export function SidesPad({state, onToggle}: SidesPadProps) {
 	// the board.
 	const squares = [];
 	let dir = 0;
-	for (let r = 0; r < 3; r++) {
-		for (let c = 0; c < 3; c++) {
-			if (r === 1 && c === 1) {
+	for (let r = 0; r < 3; r++)
+	{
+		for (let c = 0; c < 3; c++)
+		{
+			if (r === 1 && c === 1)
+			{
 				squares.push(
 					<span className="xc mid" key="mid">
 						{piece.hi ? `${piece.v}-${piece.hi}` : piece.v}
@@ -57,7 +64,8 @@ export function SidesPad({state, onToggle}: SidesPadProps) {
 					className={`xc${on ? " on" : ""}${taken ? " taken" : ""}`}
 					disabled={taken}
 					aria-label={`${DIRNAME[i]}${on ? ", closed" : ""}`}
-					onClick={() => {
+					onClick={() =>
+					{
 						onToggle(i);
 					}}
 				>

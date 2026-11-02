@@ -8,7 +8,8 @@ import type {Kind, Piece, Pid} from "./types.js";
 /** In the order the share code writes them; the index is the three bit kind field. */
 export const KINDS: readonly Kind[] = ["n", "s", "b", "p", "e"];
 
-export const KINDLABEL: Readonly<Record<Kind, string>> = {
+export const KINDLABEL: Readonly<Record<Kind, string>> =
+{
 	n: "Plain",
 	s: "Sum",
 	b: "Blank",
@@ -16,7 +17,8 @@ export const KINDLABEL: Readonly<Record<Kind, string>> = {
 	e: "Powered",
 };
 
-export const KINDBLURB: Readonly<Record<Kind, string>> = {
+export const KINDBLURB: Readonly<Record<Kind, string>> =
+{
 	n: "Wants that many buildings touching it.",
 	s: "A sum building. Wants the numbers touching it to add up to its own.",
 	b: "Wants nothing at all. Happy anywhere.",
@@ -25,7 +27,14 @@ export const KINDBLURB: Readonly<Record<Kind, string>> = {
 };
 
 /** The order the bag lists kinds in: plain, powered, sum, plant, blank. */
-export const KORDER: Readonly<Record<Kind, number>> = {n: 0, e: 1, s: 2, p: 3, b: 4};
+export const KORDER: Readonly<Record<Kind, number>> =
+{
+	n: 0,
+	e: 1,
+	s: 2,
+	p: 3,
+	b: 4,
+};
 
 export const pid = (p: Piece): Pid => p.k + p.v + (p.hi ? `~${p.hi}` : "") + (p.m ? `.${p.m}` : "");
 
@@ -35,9 +44,16 @@ const PID = /^([nsbpe])(\d+)(?:~(\d+))?(?:\.(\d+))?$/;
  * Ids come back out of saved history and out of pasted share codes, so a bad one is a normal
  * thing to meet rather than a bug. It becomes a plain 1 instead of throwing.
  */
-export function unpid(str: string): Piece {
+export function unpid(str: string): Piece
+{
 	const g = PID.exec(str);
-	if (!g) return {k: "n", v: 1, hi: 0, m: 0};
+	if (!g)
+		return {
+			k: "n",
+			v: 1,
+			hi: 0,
+			m: 0,
+		};
 	return {
 		k: g[1] as Kind,
 		v: Number(g[2]),
@@ -61,7 +77,8 @@ export const counts = (k: Kind): boolean => k === "n" || k === "e";
  */
 export const contrib = (p: Piece, count: number): number => (counts(p.k) ? (p.hi ? count : p.v) : 0);
 
-export function describePiece(p: Piece): string {
+export function describePiece(p: Piece): string
+{
 	if (p.k === "p") return `Power plant ${p.v}`;
 	if (p.k === "b") return "Blank building";
 	const n = p.hi ? `${p.v} to ${p.hi}` : `${p.v}`;
