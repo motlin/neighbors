@@ -5,10 +5,12 @@ import {describe, expect, it} from "vitest";
 const css = readFileSync(fileURLToPath(new URL("../../src/styles/board.css", import.meta.url)), "utf8");
 
 /** The declarations inside the first rule whose selector list matches, as written. */
-function ruleBody(selector: string): string {
-	const at = css.indexOf(`${selector} {`);
-	expect(at, `no rule for ${selector}`).toBeGreaterThan(-1);
-	return css.slice(at + selector.length + 2, css.indexOf("}", at));
+function ruleBody(selector: string): string
+{
+	const header = new RegExp(`${selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*\\{`).exec(css);
+	expect(header, `no rule for ${selector}`).not.toBeNull();
+	const start = header!.index + header![0].length;
+	return css.slice(start, css.indexOf("}", start));
 }
 
 /**
@@ -17,15 +19,19 @@ function ruleBody(selector: string): string {
  * near a cell edge that reads as a piece flashing on and off ten times a second. The hover mark
  * has to be one that leaves the cell's box where it is.
  */
-describe("erasable hover", () => {
-	it("marks the cell without moving it out from under the pointer", () => {
+describe("erasable hover", () =>
+{
+	it("marks the cell without moving it out from under the pointer", () =>
+	{
 		const body = ruleBody(".cell.cube.erasable:hover");
 		expect(body).not.toMatch(/\btransform\b/);
 		expect(body).toMatch(/\bbox-shadow\b/);
 	});
 
-	it("leaves no other hover on the board changing a cell's geometry", () => {
-		for (const [, selector, body] of css.matchAll(/([^{}]*:hover[^{}]*)\{([^}]*)\}/g)) {
+	it("leaves no other hover on the board changing a cell's geometry", () =>
+	{
+		for (const [, selector, body] of css.matchAll(/([^{}]*:hover[^{}]*)\{([^}]*)\}/g))
+		{
 			expect(body, `${selector!.trim()} moves its own hit area`).not.toMatch(/\btransform\b/);
 		}
 	});

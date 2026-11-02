@@ -14,7 +14,8 @@ const MAX = 64;
 /** The padding on the scroller, which is not room for cells. */
 const CHROME = 6;
 
-function cellSizeFor(available: number, cols: number): number {
+function cellSizeFor(available: number, cols: number): number
+{
 	return Math.max(MIN, Math.min(MAX, Math.floor((available - (cols - 1) * GAP) / cols)));
 }
 
@@ -26,20 +27,25 @@ function cellSizeFor(available: number, cols: number): number {
 export function useBoardSize(
 	cols: number,
 	frozen: number | null,
-): {
+):
+{
 	paneRef: (node: HTMLElement | null) => void;
 	size: number;
-} {
+}
+{
 	const [available, setAvailable] = useState(0);
 	const [pane, setPane] = useState<HTMLElement | null>(null);
 
-	const paneRef = useCallback((node: HTMLElement | null) => {
+	const paneRef = useCallback((node: HTMLElement | null) =>
+	{
 		setPane(node);
 	}, []);
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		if (!pane) return undefined;
-		const measure = () => {
+		const measure = () =>
+		{
 			setAvailable(Math.max(200, pane.clientWidth - CHROME));
 		};
 		measure();
@@ -48,10 +54,14 @@ export function useBoardSize(
 		if (typeof ResizeObserver === "undefined") return undefined;
 		const ro = new ResizeObserver(measure);
 		ro.observe(pane);
-		return () => {
+		return () =>
+		{
 			ro.disconnect();
 		};
 	}, [pane]);
 
-	return {paneRef, size: frozen ?? cellSizeFor(available || 640, cols)};
+	return {
+		paneRef,
+		size: frozen ?? cellSizeFor(available || 640, cols),
+	};
 }

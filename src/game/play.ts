@@ -13,14 +13,16 @@ import type {Bag, Board, Key, Pid} from "./types.js";
 
 export type Origin = "dealt" | "made";
 
-interface Move {
+interface Move
+{
 	t: "place" | "erase";
 	x: number;
 	y: number;
 	p: Pid;
 }
 
-export interface PlayState {
+export interface PlayState
+{
 	/** How many pieces the puzzle was dealt with. */
 	pieces: number;
 	/** The dealt bag, kept so `restart` can put it all back. */
@@ -44,28 +46,33 @@ export interface PlayState {
 	finishAt: number;
 }
 
-export interface StartOptions {
+export interface StartOptions
+{
 	origin?: Origin;
 	code?: string;
 	id?: string | null;
 }
 
-export function bagFrom(list: readonly Pid[]): Bag {
+export function bagFrom(list: readonly Pid[]): Bag
+{
 	const b: Record<Pid, number> = {};
 	for (const p of list) b[p] = (b[p] ?? 0) + 1;
 	return b;
 }
 
-export function bagLeft(s: PlayState): number {
+export function bagLeft(s: PlayState): number
+{
 	let t = 0;
 	for (const k in s.bag) t += s.bag[k]!;
 	return t;
 }
 
 /** The piece the bag offers next: plain, then powered, then sum, then plant, then blank. */
-export function firstAvailable(bag: Bag): Pid | null {
+export function firstAvailable(bag: Bag): Pid | null
+{
 	const keys = Object.keys(bag).filter((p) => bag[p]! > 0);
-	keys.sort((a, b) => {
+	keys.sort((a, b) =>
+	{
 		const A = unpid(a);
 		const B = unpid(b);
 		return KORDER[A.k] - KORDER[B.k] || A.v - B.v || A.m - B.m;
@@ -73,7 +80,8 @@ export function firstAvailable(bag: Bag): Pid | null {
 	return keys[0] ?? null;
 }
 
-export function startPuzzle(list: readonly Pid[], opt: StartOptions = {}): PlayState {
+export function startPuzzle(list: readonly Pid[], opt: StartOptions = {}): PlayState
+{
 	const bag = bagFrom(list);
 	return {
 		pieces: list.length,
@@ -97,22 +105,42 @@ export function startPuzzle(list: readonly Pid[], opt: StartOptions = {}): PlayS
  * A puzzle is won when the bag is empty and the board agrees with itself. `solved` passes an empty
  * board, so the bag is checked first: that is the difference between finished and not yet started.
  */
-function settle(s: PlayState, now: number): PlayState {
+function settle(s: PlayState, now: number): PlayState
+{
 	if (s.won || bagLeft(s) > 0 || s.board.size === 0 || !solved(s.board)) return s;
-	return {...s, won: true, peek: false, finishAt: s.startAt ? now : 0};
+	return {
+		...s,
+		won: true,
+		peek: false,
+		finishAt: s.startAt ? now : 0,
+	};
 }
 
-export function place(s: PlayState, x: number, y: number, now: number): PlayState {
+export function place(s: PlayState, x: number, y: number, now: number): PlayState
+{
 	if (s.won || !s.sel || !s.bag[s.sel]) return s;
 	if (!isLegal(s.board, x, y)) return s;
 	const board = new Map(s.board);
 	board.set(key(x, y), unpid(s.sel));
-	const bag = {...s.bag, [s.sel]: s.bag[s.sel]! - 1};
-	const next: PlayState = {
+	const bag =
+	{
+		...s.bag,
+		[s.sel]: s.bag[s.sel]! - 1,
+	};
+	const next: PlayState =
+	{
 		...s,
 		board,
 		bag,
-		history: [...s.history, {t: "place", x, y, p: s.sel}],
+		history: [
+			...s.history,
+			{
+				t: "place",
+				x,
+				y,
+				p: s.sel,
+			},
+		],
 		just: key(x, y),
 		startAt: s.startAt || now,
 		sel: bag[s.sel] ? s.sel : firstAvailable(bag),
@@ -120,35 +148,55 @@ export function place(s: PlayState, x: number, y: number, now: number): PlayStat
 	return settle(next, now);
 }
 
-export function erase(s: PlayState, x: number, y: number): PlayState {
+export function erase(s: PlayState, x: number, y: number): PlayState
+{
 	const k = key(x, y);
 	const piece = s.board.get(k);
 	if (s.won || !piece) return s;
 	const id = pid(piece);
 	const board = new Map(s.board);
 	board.delete(k);
-	const bag = {...s.bag, [id]: (s.bag[id] ?? 0) + 1};
+	const bag =
+	{
+		...s.bag,
+		[id]: (s.bag[id] ?? 0) + 1,
+	};
 	return {
 		...s,
 		board,
 		bag,
-		history: [...s.history, {t: "erase", x, y, p: id}],
+		history: [
+			...s.history,
+			{
+				t: "erase",
+				x,
+				y,
+				p: id,
+			},
+		],
 		just: null,
 		sel: !s.sel || !s.bag[s.sel] ? id : s.sel,
 	};
 }
 
-export function undo(s: PlayState): PlayState {
+export function undo(s: PlayState): PlayState
+{
 	if (!s.history.length) return s;
 	const history = s.history.slice();
 	const a = history.pop()!;
 	const k = key(a.x, a.y);
 	const board = new Map(s.board);
-	const bag = {...s.bag};
-	if (a.t === "place") {
+	const bag =
+	{
+		...s.bag,
+	};
+	if (a.t === "place")
+	{
 		board.delete(k);
 		bag[a.p] = (bag[a.p] ?? 0) + 1;
-	} else {
+	}
+	else
+	{
 		board.set(k, unpid(a.p));
 		bag[a.p] = bag[a.p]! - 1;
 	}
@@ -167,7 +215,8 @@ export function undo(s: PlayState): PlayState {
 	};
 }
 
-export function restart(s: PlayState): PlayState {
+export function restart(s: PlayState): PlayState
+{
 	const bag = bagFrom(s.start);
 	return {
 		...s,

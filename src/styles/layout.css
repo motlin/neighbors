@@ -1,4 +1,5 @@
-header {
+header
+{
 	border-bottom: 1.5px solid var(--ink);
 	padding-bottom: 10px;
 	margin-bottom: var(--gap);
@@ -8,7 +9,8 @@ header {
 	align-items: flex-end;
 	gap: 10px;
 }
-h1 {
+h1
+{
 	font-family: "Archivo Black", system-ui, sans-serif;
 	font-size: clamp(28px, 7vw, 52px);
 	line-height: 0.85;
@@ -16,21 +18,24 @@ h1 {
 	margin: 0;
 	text-transform: uppercase;
 }
-.rule-line {
+.rule-line
+{
 	font-size: 11px;
 	letter-spacing: 0.05em;
 	color: var(--soft);
 	margin-top: 7px;
 	max-width: 46ch;
 }
-.plate {
+.plate
+{
 	text-align: right;
 	font-size: 10px;
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
 	color: var(--soft);
 }
-.plate b {
+.plate b
+{
 	display: block;
 	font-family: "Archivo Black", sans-serif;
 	font-size: 22px;
@@ -38,19 +43,23 @@ h1 {
 	letter-spacing: 0;
 }
 
-main {
+main
+{
 	display: grid;
 	grid-template-columns: minmax(0, 1.4fr) minmax(212px, 0.8fr);
 	gap: var(--gap);
 	align-items: start;
 }
-@media (max-width: 720px) {
-	main {
+@media (max-width: 720px)
+{
+	main
+	{
 		grid-template-columns: 1fr;
 	}
 }
 
-.board-wrap {
+.board-wrap
+{
 	position: relative;
 }
 /* the board hugs its own tracks and the pane centres it. 'safe' means that
@@ -58,7 +67,8 @@ main {
    edge instead of centring, which is what keeps a growing grid from sliding
    sideways and what makes scrollLeft compensation possible at all.
    the stable gutter stops an appearing scrollbar from nudging it too. */
-.scroller {
+.scroller
+{
 	overflow: auto;
 	padding: 2px;
 	display: flex;
@@ -71,7 +81,8 @@ main {
    board rather than by each cell's own border, which is what keeps an inside line the same
    weight as an outside one instead of two borders doubling up. the right and bottom edges close
    the last row and column, which no repeat reaches. */
-.board {
+.board
+{
 	display: grid;
 	gap: 0;
 	width: max-content;
@@ -83,7 +94,8 @@ main {
 	border-right: 1px solid var(--grid);
 	border-bottom: 1px solid var(--grid);
 }
-.board.paintable {
+.board.paintable
+{
 	touch-action: none;
 	-webkit-user-select: none;
 	user-select: none;

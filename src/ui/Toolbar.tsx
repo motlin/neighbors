@@ -9,13 +9,27 @@
 import {fmt} from "../game/clock.js";
 import type {DesignTool} from "./DesignBoard.js";
 
-const TOOLS: {mode: DesignTool; label: string}[] = [
-	{mode: "place", label: "Draw"},
-	{mode: "type", label: "Type"},
-	{mode: "x", label: "Sides"},
+const TOOLS:
+{
+	mode: DesignTool;
+	label: string;
+}[] = [
+	{
+		mode: "place",
+		label: "Draw",
+	},
+	{
+		mode: "type",
+		label: "Type",
+	},
+	{
+		mode: "x",
+		label: "Sides",
+	},
 ];
 
-export interface ToolbarProps {
+export interface ToolbarProps
+{
 	designing: boolean;
 	tool: DesignTool;
 	onTool: (tool: DesignTool) => void;
@@ -28,7 +42,8 @@ export interface ToolbarProps {
 	stopped: boolean;
 }
 
-export function Toolbar({designing, tool, onTool, hint, warn, time, stopped}: ToolbarProps) {
+export function Toolbar({designing, tool, onTool, hint, warn, time, stopped}: ToolbarProps)
+{
 	return (
 		<div className="toolbar">
 			{designing && (
@@ -38,7 +53,8 @@ export function Toolbar({designing, tool, onTool, hint, warn, time, stopped}: To
 							type="button"
 							key={mode}
 							className={`seg${mode === tool ? " on" : ""}`}
-							onClick={() => {
+							onClick={() =>
+							{
 								onTool(mode);
 							}}
 						>
@@ -56,7 +72,8 @@ export function Toolbar({designing, tool, onTool, hint, warn, time, stopped}: To
 }
 
 /** What each tool does, said in the toolbar so the pickers do not have to repeat it. */
-export function toolHint(designing: boolean, tool: DesignTool): string {
+export function toolHint(designing: boolean, tool: DesignTool): string
+{
 	if (!designing) return "Pick one, then a cell. Tap a placed piece to take it back.";
 	if (tool === "type") return "Tap a building, then choose what it is";
 	if (tool === "x") return "Tap a building, then pick sides to close off";

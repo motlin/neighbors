@@ -10,7 +10,8 @@ import {useEffect, useRef, useState} from "react";
 import {fmt} from "../game/clock.js";
 import type {HistoryEntry} from "../game/history.js";
 
-export interface HistoryPanelProps {
+export interface HistoryPanelProps
+{
 	history: readonly HistoryEntry[];
 	/** Which entry is the puzzle currently on screen, if any. */
 	currentId: string | null;
@@ -19,7 +20,8 @@ export interface HistoryPanelProps {
 	onClear: () => void;
 }
 
-function summary(e: HistoryEntry): string {
+function summary(e: HistoryEntry): string
+{
 	const bits = [e.origin === "made" ? "you made it" : "dealt"];
 	const plants = e.tally.p ?? 0;
 	if (plants > 0) bits.push(`${plants} ${plants > 1 ? "plants" : "plant"}`);
@@ -27,21 +29,26 @@ function summary(e: HistoryEntry): string {
 	return bits.join(" · ");
 }
 
-export function HistoryPanel({history, currentId, onReplay, onDelete, onClear}: HistoryPanelProps) {
+export function HistoryPanel({history, currentId, onReplay, onDelete, onClear}: HistoryPanelProps)
+{
 	const [armed, setArmed] = useState(false);
 	const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	useEffect(
-		() => () => {
+		() => () =>
+		{
 			if (timer.current) clearTimeout(timer.current);
 		},
 		[],
 	);
 
-	const clear = () => {
-		if (!armed) {
+	const clear = () =>
+	{
+		if (!armed)
+		{
 			setArmed(true);
-			timer.current = setTimeout(() => {
+			timer.current = setTimeout(() =>
+			{
 				setArmed(false);
 			}, 3500);
 			return;
@@ -71,7 +78,8 @@ export function HistoryPanel({history, currentId, onReplay, onDelete, onClear}: 
 								type="button"
 								className="hgo"
 								aria-label={`Play the ${e.n} piece puzzle again`}
-								onClick={() => {
+								onClick={() =>
+								{
 									onReplay(e.id);
 								}}
 							>
@@ -82,7 +90,8 @@ export function HistoryPanel({history, currentId, onReplay, onDelete, onClear}: 
 								type="button"
 								className="hdel"
 								aria-label={`Remove the ${e.n} piece puzzle from this list`}
-								onClick={() => {
+								onClick={() =>
+								{
 									onDelete(e.id);
 								}}
 							>

@@ -1,11 +1,13 @@
 /* what-it-is picker */
-.kpad {
+.kpad
+{
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: 4px;
 	margin-bottom: 8px;
 }
-.kc {
+.kc
+{
 	font: inherit;
 	font-size: 11px;
 	letter-spacing: 0.08em;
@@ -20,38 +22,46 @@
 		background 0.12s ease,
 		color 0.12s ease;
 }
-.kc:hover:not(.no) {
+.kc:hover:not(.no)
+{
 	background: rgba(226, 240, 251, 0.12);
 }
-.kc:focus-visible {
+.kc:focus-visible
+{
 	outline: 3px solid var(--ink);
 	outline-offset: 2px;
 }
-.kc.on {
+.kc.on
+{
 	background: var(--ink);
 	color: var(--paper);
 	border-color: var(--ink);
 }
-.kc.no {
+.kc.no
+{
 	opacity: 0.32;
 	cursor: not-allowed;
 }
-.rngrow {
+.rngrow
+{
 	text-align: center;
 	margin: 9px 0 5px;
 }
-.rngval {
+.rngval
+{
 	font-family: "Archivo Black", sans-serif;
 	font-size: 24px;
 	line-height: 1;
 }
-.rng {
+.rng
+{
 	display: grid;
 	grid-template-columns: repeat(6, 1fr);
 	gap: 3px;
 	align-items: center;
 }
-.rc {
+.rc
+{
 	font: inherit;
 	font-size: 15px;
 	font-weight: 600;
@@ -62,18 +72,22 @@
 	color: var(--ink);
 	transition: background 0.12s ease;
 }
-.rc:hover:not(:disabled) {
+.rc:hover:not(:disabled)
+{
 	background: rgba(226, 240, 251, 0.12);
 }
-.rc:focus-visible {
+.rc:focus-visible
+{
 	outline: 3px solid var(--ink);
 	outline-offset: 2px;
 }
-.rc:disabled {
+.rc:disabled
+{
 	opacity: 0.25;
 	cursor: default;
 }
-.rlab {
+.rlab
+{
 	font-size: 9px;
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
@@ -82,7 +96,8 @@
 }
 
 /* the cell that must stay empty */
-.nogo {
+.nogo
+{
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -92,32 +107,39 @@
 	transform: translate(-50%, -50%);
 	color: var(--dead);
 }
-.cell.open.no {
+.cell.open.no
+{
 	border-color: rgba(240, 86, 74, 0.5);
 }
-.cell.open.no:hover {
+.cell.open.no:hover
+{
 	background: rgba(240, 86, 74, 0.14);
 }
-.cell.void.no {
+.cell.void.no
+{
 	border-color: rgba(240, 86, 74, 0.28);
 	border-style: dashed;
 }
-.cell.cube.onno .nogo {
+.cell.cube.onno .nogo
+{
 	color: var(--on-dead);
 	opacity: 0.75;
 	--xw: 2.5px;
 }
-.board.tiny .nogo {
+.board.tiny .nogo
+{
 	--xw: 1.5px;
 }
 
-.xpad {
+.xpad
+{
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 4px;
 	margin-bottom: 8px;
 }
-.xc {
+.xc
+{
 	aspect-ratio: 1;
 	font: inherit;
 	font-size: 15px;
@@ -133,35 +155,42 @@
 		background 0.12s ease,
 		border-color 0.12s ease;
 }
-.xc:hover:not(:disabled):not(.mid) {
+.xc:hover:not(:disabled):not(.mid)
+{
 	background: rgba(226, 240, 251, 0.12);
 }
-.xc:focus-visible {
+.xc:focus-visible
+{
 	outline: 3px solid var(--ink);
 	outline-offset: 2px;
 }
-.xc.on {
+.xc.on
+{
 	background: var(--dead);
 	color: var(--on-dead);
 	border-color: var(--dead);
 }
-.xc.taken {
+.xc.taken
+{
 	opacity: 0.3;
 	cursor: default;
 	color: var(--soft);
 }
-.xc.mid {
+.xc.mid
+{
 	border: 0;
 	font-family: "Archivo Black", sans-serif;
 	font-size: 19px;
 	cursor: default;
 }
-.xc .xg.pad {
+.xc .xg.pad
+{
 	width: 15px;
 	height: 15px;
 	--xw: 2.5px;
 }
-.xc .dot {
+.xc .dot
+{
 	width: 8px;
 	height: 8px;
 	background: currentColor;

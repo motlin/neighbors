@@ -10,17 +10,20 @@ import {DIRNAME} from "../game/geometry.js";
 import type {Piece} from "../game/types.js";
 
 /** The number, sized down as it gets longer so a span like 2-4 still fits the cell. */
-function NumberLabel({piece}: {piece: Piece}) {
+function NumberLabel({piece}: {piece: Piece})
+{
 	const text = piece.hi ? `${piece.v}-${piece.hi}` : String(piece.v);
 	const cls = text.length > 4 ? " four" : text.length > 2 ? " three" : piece.v > 9 ? " two" : "";
 	return <span className={`num${cls}`}>{text}</span>;
 }
 
-export function Bolt({lit = false}: {lit?: boolean}) {
+export function Bolt({lit = false}: {lit?: boolean})
+{
 	return <i className={lit ? "blt lit" : "blt"} aria-hidden="true" />;
 }
 
-export function SideMarks({mask}: {mask: number}) {
+export function SideMarks({mask}: {mask: number})
+{
 	if (!mask) return null;
 	return (
 		<>
@@ -31,7 +34,8 @@ export function SideMarks({mask}: {mask: number}) {
 	);
 }
 
-export function NoGo() {
+export function NoGo()
+{
 	return <span className="nogo xg" aria-hidden="true" />;
 }
 
@@ -44,7 +48,8 @@ export const kindClass = (p: Piece): string =>
 	p.k === "s" ? " sum" : p.k === "b" ? " blank" : p.k === "p" ? " plant" : p.k === "e" ? " bolt" : "";
 
 /** A blank shows nothing at all; everything else shows its number. */
-export function CellFace({piece, lit = false, forbidden = false}: {piece: Piece; lit?: boolean; forbidden?: boolean}) {
+export function CellFace({piece, lit = false, forbidden = false}: {piece: Piece; lit?: boolean; forbidden?: boolean})
+{
 	if (piece.k === "b") return null;
 	return (
 		<>

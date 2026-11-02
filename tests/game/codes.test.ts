@@ -4,18 +4,22 @@ import type {Kind, Key} from "../../src/game/types.js";
 
 const shape = (...keys: Key[]) => new Set(keys);
 
-describe("encodeSet", () => {
-	it("writes nothing for an empty shape", () => {
+describe("encodeSet", () =>
+{
+	it("writes nothing for an empty shape", () =>
+	{
 		expect(encodeSet(new Set(), new Map(), new Map(), new Map())).toBe("");
 	});
 
-	it("stamps the version and the box the shape fits in", () => {
+	it("stamps the version and the box the shape fits in", () =>
+	{
 		expect(encodeSet(shape("0,0", "1,0"), new Map(), new Map(), new Map())).toMatch(/^2:2x1-/);
 	});
 
 	// A shape with nothing special about it stays two fields long; the mask and range fields only
 	// appear when there is something to put in them.
-	it("leaves off the fields it does not need", () => {
+	it("leaves off the fields it does not need", () =>
+	{
 		const plain = encodeSet(shape("0,0", "1,0"), new Map(), new Map(), new Map());
 		expect(plain.split("-")).toHaveLength(3);
 		const masked = encodeSet(shape("0,0", "1,0"), new Map(), new Map([["0,0", 4]]), new Map());
@@ -24,22 +28,26 @@ describe("encodeSet", () => {
 		expect(ranged.split("-")).toHaveLength(5);
 	});
 
-	it("normalizes position, so the same shape drawn elsewhere gets the same code", () => {
+	it("normalizes position, so the same shape drawn elsewhere gets the same code", () =>
+	{
 		const here = encodeSet(shape("0,0", "1,1"), new Map(), new Map(), new Map());
 		const there = encodeSet(shape("40,-9", "41,-8"), new Map(), new Map(), new Map());
 		expect(there).toBe(here);
 	});
 });
 
-describe("decodeCode", () => {
-	it("round-trips a plain shape", () => {
+describe("decodeCode", () =>
+{
+	it("round-trips a plain shape", () =>
+	{
 		const set = shape("0,0", "1,0", "1,1");
 		const back = decodeCode(encodeSet(set, new Map(), new Map(), new Map()));
 		expect(back).not.toBeNull();
 		expect([...back!.set].sort()).toEqual([...set].sort());
 	});
 
-	it("round-trips kinds, masks and ranges together", () => {
+	it("round-trips kinds, masks and ranges together", () =>
+	{
 		const set = shape("0,0", "1,0", "2,0");
 		const kinds = new Map<Key, Kind>([
 			["0,0", "p"],
@@ -58,7 +66,8 @@ describe("decodeCode", () => {
 
 	// A blank and a plant have no sides to close and no range to widen, so those fields are
 	// dropped on the way back in rather than being trusted.
-	it("drops masks and ranges from kinds that cannot carry them", () => {
+	it("drops masks and ranges from kinds that cannot carry them", () =>
+	{
 		const set = shape("0,0", "1,0");
 		const kinds = new Map<Key, Kind>([["0,0", "b"]]);
 		const back = decodeCode(encodeSet(set, kinds, new Map([["0,0", 8]]), new Map([["0,0", [1, 1]]])))!;
@@ -66,12 +75,14 @@ describe("decodeCode", () => {
 		expect(back.ranges.has("0,0")).toBe(false);
 	});
 
-	it("reads a code back whatever case it arrives in", () => {
+	it("reads a code back whatever case it arrives in", () =>
+	{
 		const code = encodeSet(shape("0,0", "1,1"), new Map(), new Map(), new Map());
 		expect(decodeCode(code.toUpperCase())).not.toBeNull();
 	});
 
-	it("refuses nonsense rather than guessing", () => {
+	it("refuses nonsense rather than guessing", () =>
+	{
 		expect(decodeCode("")).toBeNull();
 		expect(decodeCode("hello")).toBeNull();
 		expect(decodeCode("2:2x1-zz-0")).toBeNull();
@@ -81,7 +92,8 @@ describe("decodeCode", () => {
 
 	// Codes shared before the kind field existed have no version prefix; a saved link from then
 	// still has to open.
-	it("still reads a version 1 code", () => {
+	it("still reads a version 1 code", () =>
+	{
 		// Two cells side by side: shape bits "11", padded to five and read as base32, is "o".
 		const back = decodeCode("2x1-o")!;
 		expect(back).not.toBeNull();

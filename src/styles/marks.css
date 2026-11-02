@@ -1,11 +1,13 @@
 /* X marks are drawn, not typed: two square-ended strokes at exact 45 degrees */
-.xg {
+.xg
+{
 	position: relative;
 	display: block;
 	pointer-events: none;
 }
 .xg::before,
-.xg::after {
+.xg::after
+{
 	content: "";
 	position: absolute;
 	left: -20.7%;
@@ -15,80 +17,96 @@
 	margin-top: calc(var(--xw, 2px) / -2);
 	background: currentColor;
 }
-.xg::before {
+.xg::before
+{
 	transform: rotate(45deg);
 }
-.xg::after {
+.xg::after
+{
 	transform: rotate(-45deg);
 }
 
 /* small ticks on the piece's own edge: which sides it closed */
-.xm {
+.xm
+{
 	position: absolute;
 	--xw: 1.5px;
 	opacity: 0.85;
 	width: calc(var(--fs)*0.34);
 	height: calc(var(--fs)*0.34);
 }
-.xm.d0 {
+.xm.d0
+{
 	top: 0;
 	left: 2px;
 }
-.xm.d1 {
+.xm.d1
+{
 	top: 0;
 	left: 50%;
 	transform: translateX(-50%);
 }
-.xm.d2 {
+.xm.d2
+{
 	top: 0;
 	right: 2px;
 }
-.xm.d3 {
+.xm.d3
+{
 	top: 50%;
 	left: 2px;
 	transform: translateY(-50%);
 }
-.xm.d4 {
+.xm.d4
+{
 	top: 50%;
 	right: 2px;
 	transform: translateY(-50%);
 }
-.xm.d5 {
+.xm.d5
+{
 	bottom: 0;
 	left: 2px;
 }
-.xm.d6 {
+.xm.d6
+{
 	bottom: 0;
 	left: 50%;
 	transform: translateX(-50%);
 }
-.xm.d7 {
+.xm.d7
+{
 	bottom: 0;
 	right: 2px;
 }
-.cell.cube.picked {
+.cell.cube.picked
+{
 	box-shadow: inset 0 0 0 3px var(--met);
 }
 
 /* a blank building is exactly that: a plain filled square, nothing drawn on it.
    it always reads satisfied, so the .met fill already covers the board case. */
-.tile.blank {
+.tile.blank
+{
 	background: var(--met);
 	border-color: var(--met);
 	color: var(--on-met);
 }
-.tile.blank.on {
+.tile.blank.on
+{
 	box-shadow: inset 0 0 0 3px var(--ink);
 }
 
 /* a working plant is amber on the board, not cyan: power is its own system.
    a failed one still goes red, so failures read the same everywhere. */
-.cell.cube.plant.met {
+.cell.cube.plant.met
+{
 	background: var(--power);
 	border-color: var(--power);
 	color: var(--on-power);
 }
-.cell.cube.plant::before {
+.cell.cube.plant::before
+{
 	content: "";
 	position: absolute;
 	inset: 11%;
@@ -96,19 +114,22 @@
 	opacity: 0.45;
 	pointer-events: none;
 }
-.tile.plant {
+.tile.plant
+{
 	background: var(--power);
 	border-color: var(--power);
 	color: var(--on-power);
 }
-.tile.plant::before {
+.tile.plant::before
+{
 	content: "";
 	position: absolute;
 	inset: 4px;
 	border: 1.5px solid currentColor;
 	opacity: 0.45;
 }
-.tile.plant.on {
+.tile.plant.on
+{
 	box-shadow: inset 0 0 0 3px var(--ink);
 }
 
@@ -116,7 +137,8 @@
 /* the bolt reports power, so it stays amber on every fill, satisfied or not.
    amber and cyan sit at nearly the same luminance, so a dark halo keeps the
    lit bolt legible on a satisfied building. */
-.blt {
+.blt
+{
 	display: block;
 	width: calc(var(--fs)*0.4);
 	height: calc(var(--fs)*0.52);
@@ -125,15 +147,18 @@
 	opacity: 0.32;
 	clip-path: polygon(58% 0%, 16% 56%, 44% 56%, 38% 100%, 84% 40%, 54% 40%);
 }
-.blt.lit {
+.blt.lit
+{
 	background: var(--power);
 	opacity: 1;
 	filter: drop-shadow(0 0 1.5px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 3px rgba(0, 0, 0, 0.35));
 }
-.board.tiny .blt {
+.board.tiny .blt
+{
 	display: none;
 }
-.tile .blt {
+.tile .blt
+{
 	width: 9px;
 	height: 12px;
 	background: var(--power);

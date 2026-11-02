@@ -1,4 +1,5 @@
-.cell.cube.sum::before {
+.cell.cube.sum::before
+{
 	content: "";
 	position: absolute;
 	inset: 13%;
@@ -6,31 +7,38 @@
 	opacity: 0.55;
 	pointer-events: none;
 }
-.cell .num.two {
+.cell .num.two
+{
 	font-size: calc(var(--fs)*0.72);
 }
-.cell .num.three {
+.cell .num.three
+{
 	font-size: calc(var(--fs)*0.5);
 	letter-spacing: -0.02em;
 }
-.cell .num.four {
+.cell .num.four
+{
 	font-size: calc(var(--fs)*0.38);
 	letter-spacing: -0.03em;
 }
-.tile {
+.tile
+{
 	font-size: 21px;
 }
-.tile.rangey {
+.tile.rangey
+{
 	font-size: 14px;
 }
-.tile.sum::before {
+.tile.sum::before
+{
 	content: "";
 	position: absolute;
 	inset: 4px;
 	border: 1.5px solid currentColor;
 	opacity: 0.5;
 }
-.baglabel {
+.baglabel
+{
 	flex-basis: 100%;
 	font-size: 9px;
 	letter-spacing: 0.16em;
@@ -38,7 +46,8 @@
 	color: var(--soft);
 	margin: 4px 0 1px;
 }
-.chk {
+.chk
+{
 	display: flex;
 	align-items: center;
 	gap: 7px;
@@ -47,16 +56,19 @@
 	margin: 0 0 9px;
 	cursor: pointer;
 }
-.chk input {
+.chk input
+{
 	accent-color: var(--met);
 	width: 15px;
 	height: 15px;
 	cursor: pointer;
 }
-.modehint.warn {
+.modehint.warn
+{
 	color: var(--dead);
 }
-.clock {
+.clock
+{
 	font-size: 15px;
 	font-weight: 600;
 	font-variant-numeric: tabular-nums;
@@ -65,20 +77,24 @@
 	min-width: 62px;
 	text-align: right;
 }
-.clock.live {
+.clock.live
+{
 	color: var(--ink);
 }
-.clock.done {
+.clock.done
+{
 	color: var(--met);
 }
-.wintime {
+.wintime
+{
 	font-family: "Archivo Black", sans-serif;
 	font-size: clamp(26px, 6vw, 40px);
 	line-height: 1;
 	font-variant-numeric: tabular-nums;
 }
 .wintime .pb,
-.wintime .pbq {
+.wintime .pbq
+{
 	display: block;
 	font-family: "IBM Plex Mono", monospace;
 	font-size: 10px;
@@ -87,9 +103,11 @@
 	text-transform: uppercase;
 	margin-top: 6px;
 }
-.wintime .pb {
+.wintime .pb
+{
 	color: var(--met);
 }
-.wintime .pbq {
+.wintime .pbq
+{
 	color: var(--soft);
 }

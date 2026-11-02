@@ -13,7 +13,8 @@ import {key} from "./geometry.js";
 import {KINDS} from "./piece.js";
 import type {Kind, Key} from "./types.js";
 
-export interface Decoded {
+export interface Decoded
+{
 	set: Set<Key>;
 	kinds: Map<Key, Kind>;
 	masks: Map<Key, number>;
@@ -25,7 +26,8 @@ const B32 = "0123456789abcdefghijklmnopqrstuv";
 /** The biggest box a code may describe. Well past any playable puzzle, and it bounds the decode. */
 const MAX_CELLS = 4000;
 
-function bits2b32(bits: string): string {
+function bits2b32(bits: string): string
+{
 	let b = bits;
 	while (b.length % 5) b += "0";
 	let out = "";
@@ -33,9 +35,11 @@ function bits2b32(bits: string): string {
 	return out;
 }
 
-function b322bits(s: string, need: number): string | null {
+function b322bits(s: string, need: number): string | null
+{
 	let bits = "";
-	for (const ch of s) {
+	for (const ch of s)
+	{
 		const v = B32.indexOf(ch);
 		if (v < 0) return null;
 		bits += v.toString(2).padStart(5, "0");
@@ -48,7 +52,8 @@ export function encodeSet(
 	kinds: ReadonlyMap<Key, Kind>,
 	masks: ReadonlyMap<Key, number>,
 	ranges: ReadonlyMap<Key, [number, number]>,
-): string {
+): string
+{
 	if (!set.size) return "";
 	const keys = [...set];
 	const xs = keys.map((k) => Number(k.split(",")[0]));
@@ -63,10 +68,13 @@ export function encodeSet(
 	let rb = "";
 	let anyMask = false;
 	let anyRange = false;
-	for (let y = 0; y < h; y++) {
-		for (let x = 0; x < w; x++) {
+	for (let y = 0; y < h; y++)
+	{
+		for (let x = 0; x < w; x++)
+		{
 			const k = key(x + x0, y + y0);
-			if (!set.has(k)) {
+			if (!set.has(k))
+			{
 				sb += "0";
 				continue;
 			}
@@ -99,7 +107,8 @@ export function encodeSet(
  * Version 1: no prefix, no kind field. A second bitmap marked the sum buildings and a fourth
  * marked the blanks; plants and bolts did not exist yet.
  */
-function decodeV1(code: string): Decoded | null {
+function decodeV1(code: string): Decoded | null
+{
 	const m = /^(\d+)x(\d+)-([0-9a-v]+)(?:-([0-9a-v]+))?(?:-([0-9a-v]+))?(?:-([0-9a-v]+))?$/.exec(code);
 	if (!m) return null;
 	const w = Number(m[1]);
@@ -112,39 +121,52 @@ function decodeV1(code: string): Decoded | null {
 	const set = new Set<Key>();
 	const kinds = new Map<Key, Kind>();
 	const order: Key[] = [];
-	for (let i = 0; i < w * h; i++) {
+	for (let i = 0; i < w * h; i++)
+	{
 		const k = key(i % w, Math.floor(i / w));
-		if (sb[i] === "1") {
+		if (sb[i] === "1")
+		{
 			set.add(k);
 			order.push(k);
 			kinds.set(k, mb?.[i] === "1" ? "s" : "n");
 		}
 	}
 	const masks = new Map<Key, number>();
-	if (m[5]) {
+	if (m[5])
+	{
 		const xb = b322bits(m[5], order.length * 8);
 		if (!xb) return null;
-		order.forEach((k, i) => {
+		order.forEach((k, i) =>
+		{
 			let v = 0;
 			for (let b = 0; b < 8; b++) if (xb[i * 8 + b] === "1") v |= 1 << b;
 			if (v) masks.set(k, v);
 		});
 	}
-	if (m[6]) {
+	if (m[6])
+	{
 		const bb = b322bits(m[6], w * h);
 		if (!bb) return null;
-		for (let i = 0; i < w * h; i++) {
+		for (let i = 0; i < w * h; i++)
+		{
 			const k = key(i % w, Math.floor(i / w));
-			if (bb[i] === "1" && set.has(k)) {
+			if (bb[i] === "1" && set.has(k))
+			{
 				kinds.set(k, "b");
 				masks.delete(k);
 			}
 		}
 	}
-	return {set, kinds, masks, ranges: new Map()};
+	return {
+		set,
+		kinds,
+		masks,
+		ranges: new Map(),
+	};
 }
 
-export function decodeCode(code: string): Decoded | null {
+export function decodeCode(code: string): Decoded | null
+{
 	const s = code.trim().toLowerCase();
 	if (!s.startsWith("2:")) return decodeV1(s);
 	const m = /^2:(\d+)x(\d+)-([0-9a-v]+)-([0-9a-v]+)(?:-([0-9a-v]+))?(?:-([0-9a-v]+))?$/.exec(s);
@@ -156,9 +178,11 @@ export function decodeCode(code: string): Decoded | null {
 	if (!sb) return null;
 	const set = new Set<Key>();
 	const order: Key[] = [];
-	for (let i = 0; i < w * h; i++) {
+	for (let i = 0; i < w * h; i++)
+	{
 		const k = key(i % w, Math.floor(i / w));
-		if (sb[i] === "1") {
+		if (sb[i] === "1")
+		{
 			set.add(k);
 			order.push(k);
 		}
@@ -166,30 +190,40 @@ export function decodeCode(code: string): Decoded | null {
 	const kb = b322bits(m[4]!, order.length * 3);
 	if (!kb) return null;
 	const kinds = new Map<Key, Kind>();
-	order.forEach((k, i) => {
+	order.forEach((k, i) =>
+	{
 		const idx = parseInt(kb.slice(i * 3, i * 3 + 3), 2);
 		kinds.set(k, KINDS[idx] ?? "n");
 	});
 	// A blank and a plant have neither sides to close nor a range to widen, so those fields are
 	// dropped on the way in rather than trusted: a hand-edited code cannot smuggle one back.
 	const masks = new Map<Key, number>();
-	if (m[5]) {
+	if (m[5])
+	{
 		const xb = b322bits(m[5], order.length * 8);
 		if (!xb) return null;
-		order.forEach((k, i) => {
+		order.forEach((k, i) =>
+		{
 			const v = parseInt(xb.slice(i * 8, i * 8 + 8), 2);
 			if (v && kinds.get(k) !== "b" && kinds.get(k) !== "p") masks.set(k, v);
 		});
 	}
 	const ranges = new Map<Key, [number, number]>();
-	if (m[6]) {
+	if (m[6])
+	{
 		const rb = b322bits(m[6], order.length * 6);
 		if (!rb) return null;
-		order.forEach((k, i) => {
+		order.forEach((k, i) =>
+		{
 			const d = parseInt(rb.slice(i * 6, i * 6 + 3), 2);
 			const u = parseInt(rb.slice(i * 6 + 3, i * 6 + 6), 2);
 			if ((d || u) && kinds.get(k) !== "b" && kinds.get(k) !== "p") ranges.set(k, [d, u]);
 		});
 	}
-	return {set, kinds, masks, ranges};
+	return {
+		set,
+		kinds,
+		masks,
+		ranges,
+	};
 }

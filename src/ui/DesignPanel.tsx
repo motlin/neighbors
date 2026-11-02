@@ -15,7 +15,8 @@ import {SidesPad} from "./SidesPad.js";
 import type {DesignTool} from "./DesignBoard.js";
 import type {Kind} from "../game/types.js";
 
-export interface DesignPanelProps {
+export interface DesignPanelProps
+{
 	state: DesignState;
 	tool: DesignTool;
 	onPlay: () => void;
@@ -37,42 +38,52 @@ export function DesignPanel({
 	onToggleSide,
 	onRefuse,
 	onLoad,
-}: DesignPanelProps) {
+}: DesignPanelProps)
+{
 	const code = designCode(state);
 	// The field follows the design until it is typed into, and goes back to following it once the
 	// typed code has been loaded or the design has moved on.
 	const [typed, setTyped] = useState<string | null>(null);
 	const [copyLabel, setCopyLabel] = useState("Copy");
 	const [loadLabel, setLoadLabel] = useState("Load");
-	useEffect(() => {
+	useEffect(() =>
+	{
 		setTyped(null);
 	}, [code]);
 
 	const status = designStatus(state);
 	const bag = bagFrom(designBag(state));
 
-	const copy = async () => {
+	const copy = async () =>
+	{
 		const value = typed ?? code;
 		if (!value) return;
-		try {
+		try
+		{
 			await navigator.clipboard.writeText(value);
 			setCopyLabel("Copied");
-		} catch {
+		}
+		catch
+		{
 			// A browser that refuses the clipboard still leaves the code selectable in the field.
 			setCopyLabel("Select it");
 		}
-		setTimeout(() => {
+		setTimeout(() =>
+		{
 			setCopyLabel("Copy");
 		}, 1200);
 	};
 
-	const load = () => {
-		if (onLoad(typed ?? code)) {
+	const load = () =>
+	{
+		if (onLoad(typed ?? code))
+		{
 			setTyped(null);
 			return;
 		}
 		setLoadLabel("Bad code");
-		setTimeout(() => {
+		setTimeout(() =>
+		{
 			setLoadLabel("Load");
 		}, 1400);
 	};
@@ -84,7 +95,13 @@ export function DesignPanel({
 			<div className="bag">
 				<BagPanel bag={bag} selected={null} onPick={null} emptyMessage="Nothing drawn yet." />
 			</div>
-			<div className="controls" style={{marginTop: 11}}>
+			<div
+				className="controls"
+				style={
+				{
+					marginTop: 11,
+				}}
+			>
 				<button type="button" className="act" disabled={!status.ok} onClick={onPlay}>
 					Play this shape
 				</button>
@@ -115,7 +132,8 @@ export function DesignPanel({
 				aria-label="Shape share code"
 				placeholder="paste a code, then Load"
 				value={typed ?? code}
-				onChange={(e) => {
+				onChange={(e) =>
+				{
 					setTyped(e.target.value);
 				}}
 			/>

@@ -1,13 +1,16 @@
-aside {
+aside
+{
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap);
 }
-.panel {
+.panel
+{
 	border: 1.5px solid var(--ink);
 	padding: 11px 12px;
 }
-.panel h2 {
+.panel h2
+{
 	font-size: 10px;
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
@@ -18,12 +21,14 @@ aside {
 	padding-bottom: 5px;
 }
 
-.bag {
+.bag
+{
 	display: flex;
 	flex-wrap: wrap;
 	gap: 6px;
 }
-.tile {
+.tile
+{
 	position: relative;
 	width: 46px;
 	height: 46px;
@@ -41,7 +46,8 @@ aside {
 		background 0.12s ease,
 		color 0.12s ease;
 }
-.tile .ct {
+.tile .ct
+{
 	position: absolute;
 	bottom: 1px;
 	right: 3px;
@@ -50,45 +56,55 @@ aside {
 	font-weight: 600;
 	opacity: 0.62;
 }
-.tile:hover:not(:disabled) {
+.tile:hover:not(:disabled)
+{
 	background: rgba(226, 240, 251, 0.12);
 }
-.tile.on {
+.tile.on
+{
 	background: var(--ink);
 	color: var(--paper);
 }
-.tile:focus-visible {
+.tile:focus-visible
+{
 	outline: 3px solid var(--ink);
 	outline-offset: 2px;
 }
-.tile:disabled {
+.tile:disabled
+{
 	opacity: 0.2;
 	cursor: default;
 }
-.bagdone {
+.bagdone
+{
 	font-size: 11px;
 	color: var(--soft);
 }
 
-.toolbar {
+.toolbar
+{
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: 10px;
 	margin-bottom: 10px;
 }
-.toolbar .modehint {
+.toolbar .modehint
+{
 	flex: 1;
 	text-align: left;
 }
-.mode {
+.mode
+{
 	display: inline-flex;
 	border: 1.5px solid var(--ink);
 }
-.mode.hide {
+.mode.hide
+{
 	display: none;
 }
-.seg {
+.seg
+{
 	font: inherit;
 	font-size: 11px;
 	letter-spacing: 0.11em;
@@ -103,21 +119,26 @@ aside {
 		background 0.12s ease,
 		color 0.12s ease;
 }
-.seg + .seg {
+.seg + .seg
+{
 	border-left: 1.5px solid var(--ink);
 }
-.seg:hover:not(.on) {
+.seg:hover:not(.on)
+{
 	background: rgba(226, 240, 251, 0.12);
 }
-.seg:focus-visible {
+.seg:focus-visible
+{
 	outline: 3px solid var(--ink);
 	outline-offset: -3px;
 }
-.seg.on {
+.seg.on
+{
 	background: var(--ink);
 	color: var(--paper);
 }
-.modehint {
+.modehint
+{
 	font-size: 10px;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
@@ -125,14 +146,16 @@ aside {
 	text-align: right;
 }
 
-.size {
+.size
+{
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: 8px;
 	margin-bottom: 6px;
 }
-.step {
+.step
+{
 	width: 36px;
 	height: 36px;
 	font-family: "Archivo Black", sans-serif;
@@ -146,26 +169,31 @@ aside {
 		background 0.12s ease,
 		color 0.12s ease;
 }
-.step:hover:not(:disabled) {
+.step:hover:not(:disabled)
+{
 	background: var(--ink);
 	color: var(--paper);
 }
-.step:focus-visible {
+.step:focus-visible
+{
 	outline: 3px solid var(--ink);
 	outline-offset: 2px;
 }
-.step:disabled {
+.step:disabled
+{
 	opacity: 0.25;
 	cursor: default;
 }
-.size .val {
+.size .val
+{
 	font-family: "Archivo Black", sans-serif;
 	font-size: 30px;
 	line-height: 1;
 	text-align: center;
 	flex: 1;
 }
-.size .val small {
+.size .val small
+{
 	display: block;
 	font-family: "IBM Plex Mono", monospace;
 	font-size: 9px;
@@ -175,47 +203,57 @@ aside {
 	color: var(--soft);
 	margin-top: 2px;
 }
-input[type="range"] {
+input[type="range"]
+{
 	width: 100%;
 	accent-color: var(--met);
 	margin: 0 0 10px;
 	display: block;
 }
-.deal {
+.deal
+{
 	width: 100%;
 	text-align: center;
 }
-.deal.pending {
+.deal.pending
+{
 	background: var(--ink);
 	color: var(--paper);
 }
 
-.cell.cube.design {
+.cell.cube.design
+{
 	background: var(--cell);
 	border-color: var(--ink);
 }
-.tile.static {
+.tile.static
+{
 	cursor: default;
 	background: transparent;
 }
-.tile.static:hover {
+.tile.static:hover
+{
 	background: transparent;
 }
-.dstat {
+.dstat
+{
 	font-size: 11px;
 	line-height: 1.5;
 	color: var(--soft);
 	margin-bottom: 9px;
 }
-.dstat b {
+.dstat b
+{
 	color: var(--ink);
 	font-weight: 600;
 }
-.dstat .no {
+.dstat .no
+{
 	color: var(--dead);
 	font-weight: 600;
 }
-.codebox {
+.codebox
+{
 	width: 100%;
 	font: inherit;
 	font-size: 11px;
@@ -225,15 +263,18 @@ input[type="range"] {
 	background: transparent;
 	color: var(--ink);
 }
-.codebox:focus-visible {
+.codebox:focus-visible
+{
 	outline: 3px solid var(--ink);
 	outline-offset: 2px;
 }
-.panel h2.sub {
+.panel h2.sub
+{
 	margin-top: 15px;
 }
 
-.hist {
+.hist
+{
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
@@ -241,17 +282,20 @@ input[type="range"] {
 	overflow: auto;
 }
 /* the row is a container now: replay on the left, its own delete on the right */
-.hrow {
+.hrow
+{
 	display: flex;
 	align-items: stretch;
 	border: 1.5px solid rgba(226, 240, 251, 0.28);
 	transition: border-color 0.12s ease;
 }
-.hrow.cur {
+.hrow.cur
+{
 	border-color: var(--ink);
 	background: rgba(226, 240, 251, 0.08);
 }
-.hgo {
+.hgo
+{
 	display: flex;
 	align-items: center;
 	gap: 9px;
@@ -266,19 +310,23 @@ input[type="range"] {
 	cursor: pointer;
 	transition: background 0.12s ease;
 }
-.hgo:hover {
+.hgo:hover
+{
 	background: rgba(226, 240, 251, 0.1);
 }
-.hgo:focus-visible {
+.hgo:focus-visible
+{
 	outline: 3px solid var(--ink);
 	outline-offset: -3px;
 }
-.hgo .hn {
+.hgo .hn
+{
 	font-family: "Archivo Black", sans-serif;
 	font-size: 17px;
 	min-width: 26px;
 }
-.hgo .hmeta {
+.hgo .hmeta
+{
 	font-size: 10px;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
@@ -287,7 +335,8 @@ input[type="range"] {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-.hdel {
+.hdel
+{
 	flex: 0 0 36px;
 	display: flex;
 	align-items: center;
@@ -302,24 +351,29 @@ input[type="range"] {
 		background 0.12s ease,
 		color 0.12s ease;
 }
-.hdel:hover {
+.hdel:hover
+{
 	background: rgba(240, 86, 74, 0.2);
 	color: var(--dead);
 }
-.hdel:focus-visible {
+.hdel:focus-visible
+{
 	outline: 3px solid var(--ink);
 	outline-offset: -3px;
 }
-.hdel .xg {
+.hdel .xg
+{
 	width: 11px;
 	height: 11px;
 	--xw: 1.5px;
 }
-.histempty {
+.histempty
+{
 	font-size: 11px;
 	color: var(--soft);
 }
-.linkbtn {
+.linkbtn
+{
 	font: inherit;
 	font-size: 11px;
 	background: none;
@@ -330,21 +384,25 @@ input[type="range"] {
 	text-decoration: underline;
 	text-underline-offset: 3px;
 }
-.linkbtn:focus-visible {
+.linkbtn:focus-visible
+{
 	outline: 3px solid var(--ink);
 	outline-offset: 2px;
 }
-.readout b.ok {
+.readout b.ok
+{
 	color: var(--met);
 }
 
-.panel h2.rowhead {
+.panel h2.rowhead
+{
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: 8px;
 }
-.panel h2.rowhead .linkbtn {
+.panel h2.rowhead .linkbtn
+{
 	font-size: 10px;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
