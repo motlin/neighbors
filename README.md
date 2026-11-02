@@ -35,7 +35,8 @@ Every design has a share code, shown under the board: one line of text that carr
 just install     # install dependencies
 just dev         # dev server on http://localhost:3001
 just test        # run the tests
-just check       # format, lint and type check
+just format      # format with oxfmt-next-line
+just check       # lint and type check
 just verify      # everything CI runs
 just storybook   # the components on their own
 ```
